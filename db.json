@@ -30,7 +30,7 @@
         "descr": "Limpeza interior",
         "duração": 120
       },
-      {
+    {
         "id": "le",
         "descr": "Limpeza exterior",
         "duração": 30
@@ -302,6 +302,29 @@
           "minutos": 15
         },
         "descrição": "shampoo XPTO"
+      }
+    ],
+    "workers": [
+      {
+        "id": "1",
+        "password": "pass",
+        "name": "Diogo",
+        "skills": "2",
+        "services": []
+      },
+      {
+        "id": "2",
+        "password": "mecanico123",
+        "name": "Diana",
+        "specialization": "0",
+        "servicesDone": []
+      },
+      {
+        "id": "3",
+        "password": "eletric456",
+        "name": "Luis",
+        "specialization": "1",
+        "servicesDone": []
       }
     ]
   }

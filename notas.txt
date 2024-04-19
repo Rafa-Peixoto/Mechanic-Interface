@@ -1,0 +1,12 @@
+para verificar se está logado
+
+<script>
+import { useUserStore } from '../stores.js';
+
+export default {
+  setup() {
+    const userStore = useUserStore();
+    return { userStore };
+  }
+}
+</script>
