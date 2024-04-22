@@ -1,12 +1,66 @@
-para verificar se está logado
+<template>
+  <div class="service-page">
+    <div v-if="user">
+      <h1>Bem-vindo, {{ user.name }}</h1>
+      <!-- outras partes do template -->
+    </div>
+    <h2>Serviços Agendados:</h2>
+    <ul>
+      <li v-for="service in services" :key="service.id">
+        {{ service.descricao }} - Estado: {{ service.estado }}
+      </li>
+    </ul>
+  </div>
+</template>
 
 <script>
-import { useUserStore } from '../stores.js';
+import { useUserStore } from '../stores';
 
 export default {
-  setup() {
+  name: 'PainelServicos',
+  data() {
+    return {
+      user: null,
+      services: []
+    };
+  },
+  methods: {
+    async fetchServices() {
+      if (!this.user || !this.user.id) {
+        console.error("Usuário não está logado ou ID do usuário não está disponível.");
+        return;
+      }
+      
+      const url = `http://localhost:3000/services?clientId=${this.user.id}`;
+      try {
+        const response = await fetch(url);
+        if (!response.ok) {
+          throw new Error("Erro ao buscar serviços: " + response.statusText);
+        }
+        const data = await response.json();
+        this.services = data;
+      } catch (error) {
+        console.error('Erro ao buscar os serviços:', error.message);
+      }
+    },
+  },
+  created() {
     const userStore = useUserStore();
-    return { userStore };
+    if (userStore.isLoggedIn) {
+      this.user = userStore.user;
+      this.fetchServices();
+    } else {
+      console.log("Nenhum usuário logado para buscar serviços.");
+      this.$router.push('/Login');
+    }
   }
-}
+};
 </script>
+
+<style scoped>
+.service-page {
+  max-width: 500px;
+  margin: auto;
+  text-align: center;
+}
+</style>

@@ -106,5 +106,11 @@ button[type="button"] {
 .error-message {
   color: red;
 }
+
+.actions {
+  margin-left: 115px;
+  margin-top: 20px;
+}
+
 </style>
 

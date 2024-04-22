@@ -1,15 +1,41 @@
 <template>
   <div class="service-page">
     <div v-if="user">
-        <h1>Bem-vindo, {{ user.nome }}</h1>
-        <!-- outras partes do template -->
+      <h1>Bem-vindo, {{ user.name }}</h1>
     </div>
-    <h2>Serviços Agendados:</h2>
-    <ul>
-      <li v-for="service in services" :key="service.id">
-        {{ service.descricao }} - Estado: {{ service.estado }}
-      </li>
-    </ul>
+
+    <!-- Cabeçalho adicionado -->
+    <div class="header">
+        <h2>Página de Serviços Atribuídos</h2>
+    </div>
+
+    <!-- Tabela de serviços -->
+    <table class="services-table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Automovél</th>
+                <th>Serviço</th>
+                <th>Estado</th>
+                <th>Posto</th>
+                <th>Data</th>
+                <th>Duração</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr v-for="service in services" :key="service.id">
+                <td>
+                    <router-link :to="{ name: 'ServiceDetails', params: { serviceId: service.id }}">{{ service.id }}</router-link>
+                </td>
+                <td>{{ service.vehicleId }}</td>
+                <td>{{ service.servicedefinitionId }}</td>
+                <td>{{ service.estado }}</td>
+                <td>Posto</td>
+                <td>{{ service.horaMarcada || '-' }}</td>
+                <td>{{ service.duracao }}</td>
+            </tr>
+        </tbody>
+    </table>
   </div>
 </template>
 
@@ -20,21 +46,18 @@ export default {
   name: 'PainelServicos',
   data() {
     return {
-      user: {},
+      user: null,
       services: []
     };
   },
   methods: {
-   
-    
     async fetchServices() {
-         console.log("fetch");
       if (!this.user || !this.user.id) {
         console.error("Usuário não está logado ou ID do usuário não está disponível.");
         return;
       }
       
-      const url = `http://localhost:3000/services?clientId=${this.user.id}`;
+      const url = `http://localhost:3000/services`;
       try {
         const response = await fetch(url);
         if (!response.ok) {
@@ -45,41 +68,86 @@ export default {
       } catch (error) {
         console.error('Erro ao buscar os serviços:', error.message);
       }
+      console.log('Aqui',this.services);
     },
-
-    async created() {
-        const userStore = useUserStore();
-        this.user = userStore.user;
-        if (this.user && this.user.id) {
-        await this.fetchServices();
-        } else {
-        console.log("Nenhum usuário logado para buscar serviços.");
-        }
-    },
-
-    mounted() {
+  },
+  created() {
+    console.log("console log.");
     const userStore = useUserStore();
-    console.log("mounteed");
-    if (userStore.isLoggedIn && userStore.user) {
+    if (userStore.isLoggedIn) {
       this.user = userStore.user;
-      console.log("user");
-      console.log(userStore.user);
-      this.fetchServices(); // Não precisa ser await se não dependemos imediatamente do resultado
+      this.fetchServices();
     } else {
-      console.log("Usuário não está logado ou as informações do usuário não estão disponíveis.");
+      console.log("Nenhum usuário logado para buscar serviços.");
       this.$router.push('/Login');
     }
   }
-  }
 };
-
-
 </script>
 
 <style scoped>
 .service-page {
-  max-width: 500px;
+  max-width: 1000px;
   margin: auto;
   text-align: center;
+}
+
+.services-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 40px 0;
+}
+
+.services-table th,
+.services-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+.services-table th {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.services-table tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.services-table tr:hover {
+  background-color: #ddd;
+}
+
+.service-page h1 {
+  color: #333;
+  padding: 0px;
+  font-size: 35px;
+  margin-top: 10;
+}
+
+.header h2 {
+  color: #333;
+  padding: 0px;
+  font-size: 25px;
+}
+
+@media screen and (max-width: 600px) {
+  .services-table, .services-table th, .services-table td {
+    display: block;
+  }
+
+  .services-table th, .services-table td {
+    text-align: right;
+    padding-left: 50%;
+    text-indent: -25px;
+  }
+
+  .services-table th {
+    position: absolute;
+    left: 0;
+    width: 45%;
+    top: auto;
+    background-color: #4CAF50;
+  }
 }
 </style>

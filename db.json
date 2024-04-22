@@ -244,15 +244,16 @@
       {
         "id": "s31",
         "vehicleId": "08-25-AA",
-        "service-definitionId": "sp",
         "estado": "nafila",
+        "servicedefinitionId": "sp",
         "agendamento": "filaDeEspera",
+        "duracao": 20,
         "descrição": "Colocar XPTO 225R15"
       },
       {
         "id": "s32",
         "vehicleId": "AH-31-BB",
-        "service-definitionId": "li",
+        "servicedefinitionId": "li",
         "estado": "programado",
         "agendamento": "programado",
         "data": {
@@ -262,36 +263,40 @@
           "hora": 14,
           "minutos": 15
         },
+        "duracao": 20,
         "descrição": "Atenção ao banco do condutor."
       },
       {
         "id": "s33",
         "vehicleId": "AH-32-44",
-        "service-definitionId": "le",
+        "servicedefinitionId": "le",
         "estado": "nafila",
         "agendamento": "filaDeEspera",
+        "duracao": 20,
         "descrição": "Ver jantes."
       },
       {
         "id": "s34",
         "vehicleId": "AH-21-25",
-        "service-definitionId": "sfc",
+        "servicedefinitionId": "sfc",
         "estado": "parado",
         "agendamento": "filaDeEspera",
+        "duracao": 20,
         "descrição": "Falta o filtro."
       },
       {
         "id": "s12",
         "vehicleId": "08-25-AA",
-        "service-definitionId": "sp",
+        "servicedefinitionId": "sp",
         "estado": "realizado",
         "agendamento": "filaDeEspera",
+        "duracao": 20,
         "descrição": "Colocar XPTO 225R15"
       },
       {
         "id": "s24",
         "vehicleId": "08-25-AA",
-        "service-definitionId": "li",
+        "servicedefinitionId": "li",
         "estado": "realizado",
         "agendamento": "programado",
         "data": {
@@ -301,6 +306,7 @@
           "hora": 14,
           "minutos": 15
         },
+        "duracao": 20,
         "descrição": "shampoo XPTO"
       }
     ],
@@ -309,8 +315,17 @@
         "id": "1",
         "password": "pass",
         "name": "Diogo",
-        "skills": "2",
-        "services": []
+        "specialization": "Motor a combustão",
+        "services": [],
+        "age": "55",
+        "profession": "Mecânico",
+        "localization": "Braga",
+        "education": "Curso básico de mecânica automóvel",
+        "interests": "Automóveis, futebol, séries",
+        "objectives": "Manter o seu emprego, aprender mais sobre carros elétricos",
+        "challenges": "Adaptar-se às novas tecnologias, evitar erros e reclamações",
+        "solutions": "Pesquisar na internet, assistir a vídeos e tutoriais, pedir ajuda aos colegas mais novos",
+        "quotes": "Eu gosto de trabalhar com carros, mas às vezes sinto que não estou preparado para lidar com os novos modelos. Eu quero mostrar o meu valor na empresa, mas quando me atribuem trabalho fora da minha especialização sou obrigado a ir à secretaria dizer que não o posso realizar e temo ficar mal visto. O novo sistema devia ajudar a resolver isso. Espero que seja de utilização fácil."
       },
       {
         "id": "2",
