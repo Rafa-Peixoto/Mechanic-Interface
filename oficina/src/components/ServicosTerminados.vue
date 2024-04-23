@@ -23,15 +23,15 @@
             </tr>
         </thead>
         <tbody>
-            <tr v-for="service in services" :key="service.id">
+            <tr v-for="service in terminatedServices" :key="service.id">
                 <td>
                     <router-link :to="{ name: 'ServiceDetails', params: { serviceId: service.id }}">{{ service.id }}</router-link>
                 </td>
                 <td>{{ service.vehicleId }}</td>
-                <td>{{ service.servicedefinitionId }}</td>
+                <td>{{ getServiceDescription(service.servicedefinitionId) }}</td>
                 <td>{{ service.estado }}</td>
                 <td>Posto</td>
-                <td>{{ service.horaMarcada || '-' }}</td>
+                <td>{{ formatDate(service.data) }}</td>
                 <td>{{ service.duracao }}</td>
             </tr>
         </tbody>
@@ -47,7 +47,8 @@ export default {
   data() {
     return {
       user: null,
-      services: []
+      terminatedServices: [],
+      serviceDefinitions: [],
     };
   },
   methods: {
@@ -64,18 +65,49 @@ export default {
           throw new Error("Erro ao buscar serviços: " + response.statusText);
         }
         const data = await response.json();
-        this.services = data;
+        this.terminatedServices = data.filter(service => service.estado === "realizado" && service.workerId === this.user.id);
       } catch (error) {
         console.error('Erro ao buscar os serviços:', error.message);
       }
-      console.log('Aqui',this.services);
     },
+
+    async fetchServiceDefinitions() {
+      const url = `http://localhost:3000/service-definitions`;
+      try {
+        const response = await fetch(url);
+        if (!response.ok) {
+          throw new Error("Erro ao buscar as definições de serviço: " + response.statusText);
+        }
+        const data = await response.json();
+        this.serviceDefinitions = data;
+      } catch (error) {
+        console.error("Erro ao buscar as definições de serviço:", error.message);
+      }
+    },
+
+    getServiceDescription(serviceId) {
+    
+      if (this.serviceDefinitions) {
+        const serviceDef = this.serviceDefinitions.find(def => def.id === serviceId);
+        return serviceDef ? serviceDef.descr : "Desconhecido";
+      }
+      return "Desconhecido";
+    },
+
+     formatDate(data) {
+      if (data) {
+        return `${data.dia}/${data.mes}/${data.ano} ${data.hora}:${data.minutos}`;
+      }
+      return "-";
+    },
+
   },
   created() {
     console.log("console log.");
     const userStore = useUserStore();
     if (userStore.isLoggedIn) {
       this.user = userStore.user;
+      this.fetchServiceDefinitions();
       this.fetchServices();
     } else {
       console.log("Nenhum usuário logado para buscar serviços.");
