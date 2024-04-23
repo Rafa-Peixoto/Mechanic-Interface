@@ -2,9 +2,12 @@
     <nav id="nav" :class="{ 'login-nav': isLoginPage }">
       <h3>E.S.Ideal</h3>
       <div class="nav-items">
-        <router-link to="/Perfil">Perfil</router-link>
-        <router-link to="/Servicos">Serviço Agendado</router-link>
-        <router-link to="/Servicoterminado">Serviço Terminado</router-link>
+        <div class="links-container">
+          <router-link to="/Perfil">Perfil</router-link>
+          <router-link to="/ServicosAtribuidos">Serviços Atribuídos</router-link>
+          <router-link to="/ServicosAgendados">Serviços Agendados</router-link>          
+          <router-link to="/ServicosTerminados">Serviços Terminados</router-link>
+        </div>
       </div>
     </nav>
   </template>
@@ -31,37 +34,46 @@ export default {
 }
 
 #nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 50px;
-    background-color: #a9fdac;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 10px;
+  background-color: #a9fdac;
+  width: 100%;
+  position: relative;
+  top: -8px;
+  left: -8px;
   }
   
-  h3{
-    font-size: 30px;
-  }
-  
-  a {
-    text-decoration: none;
-    padding: 0.5rem 1.5rem;
-    font-weight: 600;
-    border: 1px solid rgb(0, 0, 0);
-    border-radius: 5px;
-    color: var(--color-accent);
-    transition: all 0.3s ease-in;
-    margin: 5px;
-    font-size: 20px;
-  }
-  
-  a.router-link-active {
-    background-color: var(--color-accent);
-    color: var(--color-light);
-  }
+h3{
+  font-size: 30px;
+}
 
-  a:hover{
-    background-color: black;
-    color: white;
-  }
+.links-container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+a {
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  font-weight: 600;
+  border: 1px solid rgb(0, 0, 0);
+  border-radius: 5px;
+  color: var(--color-accent);
+  transition: all 0.3s ease-in;
+  margin: 5px;
+  font-size: 20px;
+}
+
+a.router-link-active {
+  background-color: var(--color-accent);
+  color: var(--color-light);
+}
+
+a:hover{
+  background-color: black;
+  color: white;
+}
 
 </style>

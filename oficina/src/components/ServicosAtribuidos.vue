@@ -14,7 +14,7 @@
         <thead>
             <tr>
                 <th>Id</th>
-                <th>Automovél</th>
+                <th>Automóvel</th>
                 <th>Serviço</th>
                 <th>Estado</th>
                 <th>Posto</th>

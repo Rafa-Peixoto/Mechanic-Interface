@@ -2,7 +2,11 @@
   <div>
     <h1>Detalhes do Serviço</h1>
     <p>ID do Serviço: {{ $route.params.serviceId }}</p>
-    <!-- Adicione mais detalhes conforme necessário -->
+    <p>Matrícula: {{ $route.params.vehicleId }}</p>
+    <p>Serviço: {{ $route.params.serviceId }}</p>
+    <p>Estado: {{ $route.params.estado }}</p>
+    <p>Duração: {{ $route.params.duracao }}</p>
+    <p>Descrição: {{ $route.params.descrição }}</p>
   </div>
 </template>
 
@@ -12,7 +16,7 @@ export default {
     return {
     
       user: null,
-      services: []
+      services: [],
     
     };
   },
@@ -22,9 +26,10 @@ export default {
   methods: {
     fetchServiceDetails() {
       const serviceId = this.$route.params.serviceId;
-      // Implementar chamada fetch para obter detalhes usando serviceId
       console.log("Fetching details for service ID:", serviceId);
-      // Suponha que esta chamada fetch popule os dados necessários
+
+      const vehicleId = this.$route.params.vehicleId;
+      console.log("Fetching details for vehicle ID:", vehicleId);
     }
   }
 };

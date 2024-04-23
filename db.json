@@ -244,8 +244,9 @@
       {
         "id": "s31",
         "vehicleId": "08-25-AA",
-        "estado": "nafila",
+        "workerId": "",
         "servicedefinitionId": "sp",
+        "estado": "nafila",
         "agendamento": "filaDeEspera",
         "duracao": 20,
         "descrição": "Colocar XPTO 225R15"
@@ -253,6 +254,7 @@
       {
         "id": "s32",
         "vehicleId": "AH-31-BB",
+        "workerId": "",
         "servicedefinitionId": "li",
         "estado": "programado",
         "agendamento": "programado",
@@ -270,6 +272,7 @@
         "id": "s33",
         "vehicleId": "AH-32-44",
         "servicedefinitionId": "le",
+        "workerId": "",
         "estado": "nafila",
         "agendamento": "filaDeEspera",
         "duracao": 20,
@@ -279,6 +282,7 @@
         "id": "s34",
         "vehicleId": "AH-21-25",
         "servicedefinitionId": "sfc",
+        "workerId": "",
         "estado": "parado",
         "agendamento": "filaDeEspera",
         "duracao": 20,
@@ -288,6 +292,7 @@
         "id": "s12",
         "vehicleId": "08-25-AA",
         "servicedefinitionId": "sp",
+        "workerId": "",
         "estado": "realizado",
         "agendamento": "filaDeEspera",
         "duracao": 20,
@@ -297,6 +302,7 @@
         "id": "s24",
         "vehicleId": "08-25-AA",
         "servicedefinitionId": "li",
+        "workerId": "",
         "estado": "realizado",
         "agendamento": "programado",
         "data": {

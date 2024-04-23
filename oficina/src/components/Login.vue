@@ -42,7 +42,7 @@ export default {
           // Se login bem sucedido, redirecionar para a página principal
           const userStore = useUserStore();
           userStore.setUser(data[0]);
-          this.$router.push('/Servicos'); // substitua '/main' pela rota da sua página principal
+          this.$router.push('/ServicosAtribuidos'); // substitua '/main' pela rota da sua página principal
         } else {
           // Se nenhum usuário correspondente foi encontrado
           this.errorMessage = 'Identificador ou password incorretos.';
@@ -83,6 +83,7 @@ input[type="password"] {
   padding: 8px;
   border: 0;
   border-bottom: 1px solid black;
+  text-align: center;
 }
 
 button {
