@@ -48,7 +48,7 @@ export default {
     return {
       user: null,
       assignedServices: [],
-      serviceDefinitions: [],
+      serviceDefinitions: []
     };
   },
   methods: {
