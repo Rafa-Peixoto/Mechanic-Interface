@@ -94,12 +94,31 @@ export default {
       return "Desconhecido";
     },
 
-     formatDate(data) {
+    formatDate(data) {
       if (data) {
-        return `${data.dia}/${data.mes}/${data.ano} ${data.hora}:${data.minutos}`;
+          return `${data.dia}/${data.mes}/${data.ano} ${data.hora}:${data.minutos}`;
       }
       return "-";
     },
+
+    sortByDate(services) {
+      return services.sort((a, b) => {
+        // Verifica se ambos os serviços têm data.
+        const dateA = a.data ? new Date(`${a.data.ano}-${a.data.mes.toString().padStart(2, '0')}-${a.data.dia.toString().padStart(2, '0')}T${a.data.hora}:${a.data.minutos}`) : null;
+        const dateB = b.data ? new Date(`${b.data.ano}-${b.data.mes.toString().padStart(2, '0')}-${b.data.dia.toString().padStart(2, '0')}T${b.data.hora}:${b.data.minutos}`) : null;
+
+        // Ordena os serviços de acordo com as datas, colocando os mais antigos primeiro.
+        if (dateA && dateB) {
+          return dateA - dateB;
+        } else if (!dateA && !dateB) {
+          return 0;
+        } else if (!dateA) {
+          return 1; // Se não houver data em 'a', colocamos 'a' após 'b'.
+        } else {
+          return -1; // Se não houver data em 'b', colocamos 'a' antes de 'b'.
+        }
+      });
+    }
 
   },
   created() {

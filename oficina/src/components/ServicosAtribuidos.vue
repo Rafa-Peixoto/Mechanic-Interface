@@ -4,12 +4,10 @@
       <h1>Bem-vindo, {{ user.name }}</h1>
     </div>
 
-    <!-- Cabeçalho adicionado -->
     <div class="header">
         <h2>Página de Serviços Atribuídos</h2>
     </div>
 
-    <!-- Tabela de serviços -->
     <table class="services-table">
         <thead>
             <tr>
@@ -23,8 +21,8 @@
             </tr>
         </thead>
         <tbody>
-            <tr v-for="service in assignedServices" :key="service.id">
-                <td>
+          <tr v-for="service in sortedAssignedServices" :key="service.id">
+            <td>
                     <router-link :to="{ name: 'ServiceDetails', params: { serviceId: service.id }}">{{ service.id }}</router-link>
                 </td>
                 <td>{{ service.vehicleId }}</td>
@@ -66,6 +64,7 @@ export default {
         }
         const data = await response.json();
         this.assignedServices = data.filter(service => service.estado !== "agendado" && service.estado !== "realizado" && service.workerId === this.user.id);
+        this.assignedServices = this.sortByDate(this.assignedServices);
       } catch (error) {
         console.error('Erro ao buscar os serviços:', error.message);
       }
@@ -94,12 +93,32 @@ export default {
         return "Desconhecido";
         },
 
-      formatDate(data) {
+    formatDate(data) {
       if (data) {
           return `${data.dia}/${data.mes}/${data.ano} ${data.hora}:${data.minutos}`;
       }
       return "-";
     },
+
+    sortByDate(services) {
+      return services.sort((a, b) => {
+        // Verifica se ambos os serviços têm data.
+        const dateA = a.data ? new Date(`${a.data.ano}-${a.data.mes.toString().padStart(2, '0')}-${a.data.dia.toString().padStart(2, '0')}T${a.data.hora}:${a.data.minutos}`) : null;
+        const dateB = b.data ? new Date(`${b.data.ano}-${b.data.mes.toString().padStart(2, '0')}-${b.data.dia.toString().padStart(2, '0')}T${b.data.hora}:${b.data.minutos}`) : null;
+
+        // Ordena os serviços de acordo com as datas, colocando os mais antigos primeiro.
+        if (dateA && dateB) {
+          return dateA - dateB;
+        } else if (!dateA && !dateB) {
+          return 0;
+        } else if (!dateA) {
+          return 1; // Se não houver data em 'a', colocamos 'a' após 'b'.
+        } else {
+          return -1; // Se não houver data em 'b', colocamos 'a' antes de 'b'.
+        }
+      });
+    }
+
   },
   created() {
     console.log("console log.");
@@ -112,7 +131,13 @@ export default {
       console.log("Nenhum usuário logado para buscar serviços.");
       this.$router.push('/Login');
     }
+  },
+  computed: {
+    sortedAssignedServices() {
+      return this.sortByDate(this.assignedServices);
+    }
   }
+
 };
 </script>
 
