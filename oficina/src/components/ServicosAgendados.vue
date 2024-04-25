@@ -49,27 +49,29 @@ export default {
       user: null,
       scheduleServices: [],
       serviceDefinitions: [],
+      vehicleTypes: [],
+      workers: [],
+      vehicles:[],
     };
   },
   methods: {
     async fetchServices() {
       if (!this.user || !this.user.id) {
-        console.error("Usuário não está logado ou ID do usuário não está disponível.");
-        return;
+          console.error("Usuário não está logado ou ID do usuário não está disponível.");
+          return;
       }
       
       const url = `http://localhost:3000/services`;
       try {
-        const response = await fetch(url);
-        if (!response.ok) {
-          throw new Error("Erro ao buscar serviços: " + response.statusText);
-        }
-        const data = await response.json();
-        this.scheduleServices = data.filter(service => service.estado === "agendado" );
+          const response = await fetch(url);
+          if (!response.ok) {
+              throw new Error("Erro ao buscar serviços: " + response.statusText);
+          }
+          const data = await response.json();
+          this.scheduleServices = data; // Armazena todos os serviços, sem filtragem
       } catch (error) {
-        console.error('Erro ao buscar os serviços:', error.message);
+          console.error('Erro ao buscar os serviços:', error.message);
       }
-      console.log('Aqui',this.services);
     },
     
     async fetchServiceDefinitions(){
@@ -86,14 +88,86 @@ export default {
         }
     },
 
-    getServiceDescription(serviceId) {
-        
-        if (this.serviceDefinitions) {
-            const serviceDef = this.serviceDefinitions.find(def => def.id === serviceId);
-            return serviceDef ? serviceDef.descr : "Desconhecido";
-        }
-        return "Desconhecido";
-        },
+    getServiceDescription(serviceId) {      
+      if (this.serviceDefinitions) {
+          const serviceDef = this.serviceDefinitions.find(def => def.id === serviceId);
+          return serviceDef ? serviceDef.descr : "Desconhecido";
+      }
+      return "Desconhecido";
+    },
+
+    async fetchVehicles() {
+      const url = 'http://localhost:3000/vehicles';
+      try {
+          const response = await fetch(url);
+          if (!response.ok) {
+              throw new Error("Erro ao buscar veículos: " + response.statusText);
+          }
+          this.vehicles = await response.json();
+      } catch (error) {
+          console.error("Erro ao buscar veículos:", error.message);
+      }
+    },
+
+    async fetchVehicleTypes(){
+      const url = 'http://localhost:3000/vehicle-types';
+      try {
+          const response = await fetch(url);
+          if (!response.ok) {
+              throw new Error("Erro ao buscar os tipos de veículos: " + response.statusText);
+          }
+          const data = await response.json();
+          this.vehicleTypes = data;
+      } catch (error) {
+          console.error("Erro ao buscar os tipos de veículos:", error.message);
+      }
+    },
+
+    async fetchWorkers() {
+      const url = 'http://localhost:3000/workers';
+      try {
+          const response = await fetch(url);
+          if (!response.ok) {
+              throw new Error("Erro ao buscar os mecânicos: " + response.statusText);
+          }
+          const data = await response.json();
+          this.workers = data;
+      } catch (error) {
+          console.error("Erro ao buscar os mecânicos:", error.message);
+      }
+    },
+
+    filterServices(scheduledServices) {
+      if (!this.user || !this.user.specializationId) {
+          console.error("Informação do usuário não disponível ou especialização do usuário não definida.");
+          return [];
+      }
+
+      const specializationMap = {
+          "0": ["gerais", "gasolina", "gasoleo", "eletrico", "hibrido"], // Qualquer tipo
+          "1": ["gerais", "gasolina", "gasoleo"], // Motor a combustão
+          "2": ["gerais", "eletrico"] // Elétricos
+      };
+
+      const allowedVehicleTypes = specializationMap[this.user.specializationId] || [];
+
+      return scheduledServices.filter(service => {
+          // Filtra primeiro por estado "agendado"
+          if (service.estado !== "agendado") {
+              return false;
+          }
+
+          // Verifica se o tipo de veículo se enquadra na especialização do mecânico
+          const vehicle = this.vehicles.find(v => v.id === service.vehicleId);
+        if (!vehicle) return false;
+
+        const vehicleTypeServices = this.vehicleTypes.find(vt => vt.id === vehicle["vehicle-typeId"])?.serviços || [];
+        const isServiceAllowed = vehicleTypeServices.includes(service.servicedefinitionId);
+
+        return allowedVehicleTypes.includes(vehicle["vehicle-typeId"]) && isServiceAllowed;
+      });
+    },
+
 
     formatDate(data) {
       if (data) {
@@ -122,16 +196,21 @@ export default {
     }
 },
 
-  created() {
-    console.log("console log.");
+  async created() {
     const userStore = useUserStore();
     if (userStore.isLoggedIn) {
-      this.user = userStore.user;
-      this.fetchServiceDefinitions();
-      this.fetchServices();
+        this.user = userStore.user;
+        await Promise.all([
+            this.fetchServiceDefinitions(),
+            this.fetchServices(),
+            this.fetchVehicleTypes(),
+            this.fetchVehicles(),
+            this.fetchWorkers()
+        ]);
+        this.scheduleServices = this.filterServices(this.scheduleServices);
     } else {
-      console.log("Nenhum usuário logado para buscar serviços.");
-      this.$router.push('/Login');
+        console.log("Nenhum usuário logado para buscar serviços.");
+        this.$router.push('/Login');
     }
   }
 };

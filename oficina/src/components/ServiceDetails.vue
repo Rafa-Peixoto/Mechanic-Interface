@@ -1,30 +1,32 @@
 <template>
-  <div class="service-page">
-    <h1>Detalhes do Serviço</h1>
-    <p>ID do Serviço: {{ $route.params.serviceId }}</p>
-    <p>Matrícula: {{ serviceDetails && serviceDetails.vehicleId }}</p>
-    <p>Serviço: {{ getServiceDescription(serviceDetails && serviceDetails.servicedefinitionId) }}</p>
-    <p>Estado: 
-      <select v-model="serviceDetails.estado" @change="handleEstadoChange"  class="estado">
-        <option v-for="estado in estados" :value="estado" :key="estado">{{ estado }}</option>
-      </select>
-    </p>
-    <p>Duração: {{ serviceDetails && serviceDetails.duracao }}</p>
-    <p>Hora prevista de término: {{  endTime }}</p>
-    <p>Descrição: {{ serviceDetails && serviceDetails.descrição }}</p>
-    <p>Serviços Extra:
-      <select v-model="serviceDetails.selectedExtraServices" @change="handleServicoExtra" ref="servicoExtraSelect" class="estado">
-        <option v-for="serviceDef in serviceDefinitions" :value="serviceDef.id" :key="serviceDef.id">{{ serviceDef.descr }}</option>
-      </select>
-    </p>
-
-  </div>
-  <div class="client-info">
-    <h1>Detalhes do Cliente:</h1>
-    <p>Nome: {{  getClientName() }}</p>
-    <p>Contacto: {{  getClientContact() }}</p>
+  <div class="main-container">
+    <div class="service-page">
+      <h1>Detalhes do Serviço</h1>
+      <p>ID do Serviço: {{ $route.params.serviceId }}</p>
+      <p>Matrícula: {{ serviceDetails && serviceDetails.vehicleId }}</p>
+      <p>Serviço: {{ getServiceDescription(serviceDetails && serviceDetails.servicedefinitionId) }}</p>
+      <p>Estado: 
+        <select v-model="serviceDetails.estado" @change="handleEstadoChange" class="estado">
+          <option v-for="estado in estados" :value="estado" :key="estado">{{ estado }}</option>
+        </select>
+      </p>
+      <p>Duração: {{ serviceDetails && serviceDetails.duracao }}</p>
+      <p>Hora prevista de término: {{ endTime }}</p>
+      <p>Descrição: {{ serviceDetails && serviceDetails.descrição }}</p>
+      <p>Serviços Extra:
+        <select v-model="serviceDetails.selectedExtraServices" @change="handleServicoExtra" ref="servicoExtraSelect" class="estado">
+          <option v-for="serviceDef in serviceDefinitions" :value="serviceDef.id" :key="serviceDef.id">{{ serviceDef.descr }}</option>
+        </select>
+      </p>
+    </div>
+    <div class="client-info">
+      <h1>Detalhes do Cliente:</h1>
+      <p>Nome: {{ getClientName() }}</p>
+      <p>Contacto: {{ getClientContact() }}</p>
+    </div>
   </div>
 </template>
+
 
 <script>
 

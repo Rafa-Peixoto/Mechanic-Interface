@@ -108,7 +108,7 @@
   ],
   "vehicle-types": [
     {
-      "id": "gasolina",
+      "id": "gerais",
       "serviços": [
         "sp",
         "cr",
@@ -117,7 +117,12 @@
         "mot",
         "li",
         "le",
-        "sfah",
+        "sfah"
+      ]
+    },
+    {
+      "id": "gasolina",
+      "serviços": [
         "mom",
         "sfo",
         "sfc",
@@ -131,14 +136,6 @@
     {
       "id": "gasoleo",
       "serviços": [
-        "sp",
-        "cr",
-        "ad",
-        "sct",
-        "mot",
-        "li",
-        "le",
-        "sfah",
         "mom",
         "sfo",
         "sfc",
@@ -153,14 +150,6 @@
     {
       "id": "eletrico",
       "serviços": [
-        "sp",
-        "cr",
-        "ad",
-        "sct",
-        "mot",
-        "li",
-        "le",
-        "sfah",
         "adb",
         "sb"
       ]
@@ -168,14 +157,6 @@
     {
       "id": "hibrido",
       "serviços": [
-        "sp",
-        "cr",
-        "ad",
-        "sct",
-        "mot",
-        "li",
-        "le",
-        "sfah",
         "mom",
         "sfo",
         "sfc",
@@ -246,7 +227,7 @@
       "vehicleId": "08-25-AA",
       "workerId": "1",
       "servicedefinitionId": "sp",
-      "estado": "atribuido",
+      "estado": "parado",
       "agendamento": "filaDeEspera",
       "duracao": 20,
       "descrição": "Colocar XPTO 225R15",
@@ -319,6 +300,46 @@
       "duracao": 20,
       "descrição": "shampoo XPTO",
       "servicosextra": ""
+    },
+    {
+      "id": "754a",
+      "vehicleId": "AH-31-BB",
+      "workerId": "",
+      "servicedefinitionId": "sb",
+      "estado": "agendado",
+      "duracao": 20,
+      "descrição": "",
+      "servicosextra": ""
+    },
+    {
+      "id": "683c",
+      "vehicleId": "AH-31-BB",
+      "workerId": "",
+      "servicedefinitionId": "rfp",
+      "estado": "agendado",
+      "duracao": 30,
+      "descrição": "",
+      "servicosextra": ""
+    },
+    {
+      "id": "3c20",
+      "vehicleId": "AH-31-BB",
+      "workerId": "",
+      "servicedefinitionId": "svi",
+      "estado": "agendado",
+      "duracao": 30,
+      "descrição": "",
+      "servicosextra": ""
+    },
+    {
+      "id": "0639",
+      "vehicleId": "AH-31-BB",
+      "workerId": "",
+      "servicedefinitionId": "sp",
+      "estado": "agendado",
+      "duracao": 40,
+      "descrição": "",
+      "servicosextra": ""
     }
   ],
   "workers": [
@@ -327,6 +348,7 @@
       "password": "pass",
       "name": "Diogo",
       "specialization": "Motor a combustão",
+      "specializationId": "1",
       "servicesDone": [],
       "age": "55",
       "profession": "Mecânico",
@@ -343,6 +365,7 @@
       "password": "mecanico123",
       "name": "Diana",
       "specialization": "Geral",
+      "specializationId": "0",
       "servicesDone": [],
       "age": "24",
       "profession": "Mecânica",
