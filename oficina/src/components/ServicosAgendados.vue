@@ -30,7 +30,7 @@
                 <td>{{ service.vehicleId }}</td>
                 <td>{{ getServiceDescription(service.servicedefinitionId) }}</td>
                 <td>{{ service.estado }}</td>
-                <td>Posto</td>
+                <td>{{ getPostoDescription(service.servicedefinitionId)}}</td>
                 <td>{{ formatDate(service.data) }}</td>
                 <td>{{ service.duracao }}</td>
             </tr>
@@ -124,7 +124,25 @@ export default {
           console.error("Erro ao buscar os mecânicos:", error.message);
       }
     },
-    getServiceDescription(serviceId) {      
+    getPostoDescription(serviceDefinitionId) {
+      const isGeneral = this.vehicleTypes.some(vt => vt.id == 'gerais' && vt.serviços.includes(serviceDefinitionId));
+      const isGasolineDiesel = this.vehicleTypes.some(vt => (vt.id == 'gasolina' || vt.id == 'gasoleo') && vt.serviços.includes(serviceDefinitionId));
+      const isElectricHybrid = this.vehicleTypes.some(vt => (vt.id == 'eletrico' || vt.id == 'hibrido') && vt.serviços.includes(serviceDefinitionId));
+      console.log("Isgeneral",isGeneral);
+      // Retorna um valor com base na condição encontrada
+      if (isGeneral) {
+        return 1;  // Presente nos tipos de veículos gerais
+      } else if (isGasolineDiesel) {
+        return 2;  // Presente nos tipos de veículos de gasolina e gasóleo
+      } else if (isElectricHybrid) {
+        return 3;  // Presente nos tipos de veículos elétricos e híbridos
+      }
+
+      return 0;  // Não encontrado em nenhuma lista específica
+    },
+
+
+    getServiceDescription(serviceId) {    
       if (this.serviceDefinitions) {
           const serviceDef = this.serviceDefinitions.find(def => def.id === serviceId);
           return serviceDef ? serviceDef.descr : "Desconhecido";
@@ -207,10 +225,7 @@ export default {
             this.fetchVehicles(),
             this.fetchWorkers()
         ]);
-        console.log("Teste0",this.scheduleServices);
-
         this.scheduleServices = this.filterServices(this.scheduleServices);
-        console.log("Teste1",this.scheduleServices);
     } else {
         console.log("Nenhum usuário logado para buscar serviços.");
         this.$router.push('/Login');

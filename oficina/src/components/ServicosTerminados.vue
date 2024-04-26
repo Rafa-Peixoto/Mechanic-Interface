@@ -30,7 +30,7 @@
                 <td>{{ service.vehicleId }}</td>
                 <td>{{ getServiceDescription(service.servicedefinitionId) }}</td>
                 <td>{{ service.estado }}</td>
-                <td>Posto</td>
+                <td>{{ getPostoDescription(service.servicedefinitionId)}}</td>
                 <td>{{ formatDate(service.data) }}</td>
                 <td>{{ service.duracao }}</td>
             </tr>
@@ -49,6 +49,7 @@ export default {
       user: null,
       terminatedServices: [],
       serviceDefinitions: [],
+      vehicleTypes:[]
     };
   },
   methods: {
@@ -84,6 +85,18 @@ export default {
         console.error("Erro ao buscar as definições de serviço:", error.message);
       }
     },
+    async fetchVehicleTypes() {
+      const url = 'http://localhost:3000/vehicle-types';
+      try {
+          const response = await fetch(url);
+          if (!response.ok) {
+              throw new Error("Erro ao buscar os tipos de veículos: " + response.statusText);
+          }
+          this.vehicleTypes = await response.json();
+      } catch (error) {
+          console.error("Erro ao buscar os tipos de veículos:", error.message);
+      }
+    },  
 
     getServiceDescription(serviceId) {
     
@@ -93,7 +106,22 @@ export default {
       }
       return "Desconhecido";
     },
+     getPostoDescription(serviceDefinitionId) {
+      const isGeneral = this.vehicleTypes.some(vt => vt.id == 'gerais' && vt.serviços.includes(serviceDefinitionId));
+      const isGasolineDiesel = this.vehicleTypes.some(vt => (vt.id == 'gasolina' || vt.id == 'gasoleo') && vt.serviços.includes(serviceDefinitionId));
+      const isElectricHybrid = this.vehicleTypes.some(vt => (vt.id == 'eletrico' || vt.id == 'hibrido') && vt.serviços.includes(serviceDefinitionId));
+      console.log("Isgeneral",isGeneral);
+      // Retorna um valor com base na condição encontrada
+      if (isGeneral) {
+        return 1;  // Presente nos tipos de veículos gerais
+      } else if (isGasolineDiesel) {
+        return 2;  // Presente nos tipos de veículos de gasolina e gasóleo
+      } else if (isElectricHybrid) {
+        return 3;  // Presente nos tipos de veículos elétricos e híbridos
+      }
 
+      return 0;  // Não encontrado em nenhuma lista específica
+    },
     formatDate(data) {
       if (data) {
           return `${data.dia}/${data.mes}/${data.ano} ${data.hora}:${data.minutos}`;
@@ -121,16 +149,18 @@ export default {
     }
 
   },
-  created() {
-    console.log("console log.");
+   async created() {
     const userStore = useUserStore();
     if (userStore.isLoggedIn) {
-      this.user = userStore.user;
-      this.fetchServiceDefinitions();
-      this.fetchServices();
+        this.user = userStore.user;
+        await Promise.all([
+            this.fetchServiceDefinitions(),
+            this.fetchServices(),
+            this.fetchVehicleTypes(),
+        ]);
     } else {
-      console.log("Nenhum usuário logado para buscar serviços.");
-      this.$router.push('/Login');
+        console.log("Nenhum usuário logado para buscar serviços.");
+        this.$router.push('/Login');
     }
   }
 };
