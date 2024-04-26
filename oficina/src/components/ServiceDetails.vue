@@ -14,7 +14,7 @@
       <p>Hora prevista de término: {{ endTime }}</p>
       <p>Descrição: {{ serviceDetails && serviceDetails.descrição }}</p>
       <p>Serviços Extra:
-        <select v-model="serviceDetails.selectedExtraServices" @change="handleServicoExtra" ref="servicoExtraSelect" class="estado">
+        <select v-model="serviceDetails.selectedExtraServices" @change="handleCreateServicoExtra" ref="servicoExtraSelect" class="estado">
           <option v-for="serviceDef in serviceDefinitions" :value="serviceDef.id" :key="serviceDef.id">{{ serviceDef.descr }}</option>
         </select>
       </p>
@@ -237,7 +237,6 @@ export default {
       }
     },
 
-    
     async addExtraService(serviceId) {
       const serviceDetails = this.serviceDetails;
       try {
@@ -249,9 +248,8 @@ export default {
           body: JSON.stringify({
             vehicleId: serviceDetails.vehicleId,
             workerId: '', 
-            servicedefinitionId: serviceId,
+            servicedefinitionId: serviceId, 
             estado: 'agendado',
-            data: {},
             duracao: this.getServiceDuration(serviceId),
             descrição: '',
             servicosextra: ''
@@ -267,8 +265,7 @@ export default {
         console.error('Erro ao adicionar serviço extra:', error.message);
       }
     },
-
-    handleServicoExtra() {
+    handleAvailableServices() {
       // Limpa as opções do select antes de adicionar as opções disponíveis
       this.clearOptions();
 
@@ -297,6 +294,13 @@ export default {
       });
     },
 
+    // Função para criar e armazenar o serviço extra na base de dados
+    async handleCreateServicoExtra(event) {
+      const selectedServiceId = event.target.value;
+      await this.addExtraService(selectedServiceId);
+    },
+
+
     clearOptions() {
       // Remove todas as opções do select
       const select = this.$refs.servicoExtraSelect;
@@ -304,7 +308,7 @@ export default {
         select.removeChild(select.firstChild);
       }
     }
-
+    
   },
   async created() {
     await this.fetchServiceDetails();
@@ -313,7 +317,7 @@ export default {
     await this.fetchVehicles();
     await this.fetchVehicleTypes();
     this.endTime = await this.calculateEndTime();
-    this.handleServicoExtra();
+    this.handleAvailableServices();
   }
 };
 </script>

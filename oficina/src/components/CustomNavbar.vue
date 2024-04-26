@@ -5,14 +5,19 @@
         <div class="links-container">
           <router-link to="/Perfil">Perfil</router-link>
           <router-link to="/ServicosAtribuidos">Serviços Atribuídos</router-link>
-          <router-link to="/ServicosAgendados">Serviços Agendados</router-link>          
+          <router-link to="/ServicosAgendados">Serviços Agendados</router-link>
           <router-link to="/ServicosTerminados">Serviços Terminados</router-link>
         </div>
       </div>
+      <div class="logout">
+          <router-link to="/Login">Logout</router-link>
+        </div>
     </nav>
   </template>
 
 <script>
+//import router from '@/router';
+
 export default {
   data() {
     return {
@@ -26,7 +31,7 @@ export default {
   }
 };
 </script>
-  
+
 <style scoped>
 
 .login-nav {
@@ -44,7 +49,7 @@ export default {
   top: -8px;
   left: -8px;
   }
-  
+
 h3{
   font-size: 30px;
 }
@@ -74,6 +79,17 @@ a.router-link-active {
 a:hover{
   background-color: black;
   color: white;
+}
+
+.logout a{
+  display: flex;
+  flex-wrap: wrap;
+  color: black;
+  border: none;
+}
+.logout a:hover{
+  cursor: pointer;
+  background-color: #a9fdac;
 }
 
 </style>
