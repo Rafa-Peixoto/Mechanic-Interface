@@ -72,8 +72,7 @@ export default {
       } catch (error) {
           console.error('Erro ao buscar os serviços:', error.message);
       }
-    },
-    
+    },  
     async fetchServiceDefinitions(){
         const url = 'http://localhost:3000/service-definitions';
         try{
@@ -87,15 +86,6 @@ export default {
             console.error("Erro ao buscar as definições de serviço:", error.message);
         }
     },
-
-    getServiceDescription(serviceId) {      
-      if (this.serviceDefinitions) {
-          const serviceDef = this.serviceDefinitions.find(def => def.id === serviceId);
-          return serviceDef ? serviceDef.descr : "Desconhecido";
-      }
-      return "Desconhecido";
-    },
-
     async fetchVehicles() {
       const url = 'http://localhost:3000/vehicles';
       try {
@@ -108,7 +98,6 @@ export default {
           console.error("Erro ao buscar veículos:", error.message);
       }
     },
-
     async fetchVehicleTypes(){
       const url = 'http://localhost:3000/vehicle-types';
       try {
@@ -122,7 +111,6 @@ export default {
           console.error("Erro ao buscar os tipos de veículos:", error.message);
       }
     },
-
     async fetchWorkers() {
       const url = 'http://localhost:3000/workers';
       try {
@@ -136,46 +124,19 @@ export default {
           console.error("Erro ao buscar os mecânicos:", error.message);
       }
     },
-
-    filterServices(scheduledServices) {
-      if (!this.user || !this.user.specializationId) {
-          console.error("Informação do usuário não disponível ou especialização do usuário não definida.");
-          return [];
+    getServiceDescription(serviceId) {      
+      if (this.serviceDefinitions) {
+          const serviceDef = this.serviceDefinitions.find(def => def.id === serviceId);
+          return serviceDef ? serviceDef.descr : "Desconhecido";
       }
-
-      const specializationMap = {
-          "0": ["gerais", "gasolina", "gasoleo", "eletrico", "hibrido"], // Qualquer tipo
-          "1": ["gerais", "gasolina", "gasoleo"], // Motor a combustão
-          "2": ["gerais", "eletrico"] // Elétricos
-      };
-
-      const allowedVehicleTypes = specializationMap[this.user.specializationId] || [];
-
-      return scheduledServices.filter(service => {
-          // Filtra primeiro por estado "agendado"
-          if (service.estado !== "agendado") {
-              return false;
-          }
-
-          // Verifica se o tipo de veículo se enquadra na especialização do mecânico
-          const vehicle = this.vehicles.find(v => v.id === service.vehicleId);
-        if (!vehicle) return false;
-
-        const vehicleTypeServices = this.vehicleTypes.find(vt => vt.id === vehicle["vehicle-typeId"])?.serviços || [];
-        const isServiceAllowed = vehicleTypeServices.includes(service.servicedefinitionId);
-
-        return allowedVehicleTypes.includes(vehicle["vehicle-typeId"]) && isServiceAllowed;
-      });
+      return "Desconhecido";
     },
-
-
     formatDate(data) {
       if (data) {
           return `${data.dia}/${data.mes}/${data.ano} ${data.hora}:${data.minutos}`;
       }
       return "-";
     },
-
     sortByDate(services) {
       return services.sort((a, b) => {
         // Verifica se ambos os serviços têm data.
@@ -193,7 +154,46 @@ export default {
           return -1; // Se não houver data em 'b', colocamos 'a' antes de 'b'.
         }
       });
-    }
+    },
+
+    filterServices(scheduledServices) {
+      console.log("Teste2",this.scheduleServices);
+
+      if (!this.user) {
+        console.error("Informações do usuário não disponíveis.");
+        return [];
+      }
+
+      // Mapeamento de especialização para tipos de veículos que o mecânico pode atender
+      const specializationMap = {
+        "1": ["gerais", "gasolina", "gasoleo"], // Motor a combustão
+        "2": ["gerais", "eletrico"],            // Especialização para elétricos
+        "0": ["gerais", "gasolina", "gasoleo", "eletrico", "hibrido"] // Geral
+      };
+
+      // Obter os tipos de veículos permitidos com base na especialização do mecânico
+      const allowedVehicleTypes = specializationMap[this.user.specializationId] || [];
+        console.log("Teste1",allowedVehicleTypes);
+
+      return scheduledServices.filter(service => {
+        if (service.estado !== "agendado" || service.workerId !== this.user.id) {
+          return false;
+        }
+
+        const vehicle = this.vehicles.find(v => v.id === service.vehicleId);
+        if (!vehicle) return false;
+
+        const vehicleType = this.vehicleTypes.find(vt => vt.id === vehicle["vehicle-typeId"]);
+        if (!vehicleType) return false;
+
+        // Verifica se o tipo de veículo é permitido e se o serviço é incluído nos serviços do tipo de veículo ou é um serviço geral
+        const isVehicleTypeAllowed = allowedVehicleTypes.includes(vehicle["vehicle-typeId"]);
+        const isServiceIncludedInVehicleType = vehicleType.serviços.includes(service.servicedefinitionId);
+        const isGeneralService = this.vehicleTypes.some(vt => vt.id === "gerais" && vt.serviços.includes(service.servicedefinitionId));
+
+        return isVehicleTypeAllowed && (isServiceIncludedInVehicleType || isGeneralService);
+  });
+}
 },
 
   async created() {
@@ -207,7 +207,10 @@ export default {
             this.fetchVehicles(),
             this.fetchWorkers()
         ]);
+        console.log("Teste0",this.scheduleServices);
+
         this.scheduleServices = this.filterServices(this.scheduleServices);
+        console.log("Teste1",this.scheduleServices);
     } else {
         console.log("Nenhum usuário logado para buscar serviços.");
         this.$router.push('/Login');

@@ -46,7 +46,11 @@ export default {
     return {
       user: null,
       assignedServices: [],
-      serviceDefinitions: []
+      sortedAssignedServices: [],
+      serviceDefinitions: [],
+      vehicleTypes: [],
+      workers:[],
+      vehicles:[]
     };
   },
   methods: {
@@ -63,8 +67,7 @@ export default {
           throw new Error("Erro ao buscar serviços: " + response.statusText);
         }
         const data = await response.json();
-        this.assignedServices = data.filter(service => service.estado !== "agendado" && service.estado !== "realizado" && service.workerId === this.user.id);
-        this.assignedServices = this.sortByDate(this.assignedServices);
+        this.assignedServices = data;
       } catch (error) {
         console.error('Erro ao buscar os serviços:', error.message);
       }
@@ -83,7 +86,44 @@ export default {
             console.error("Erro ao buscar as definições de serviço:", error.message);
         }
     },
-
+    async fetchVehicles() {
+      const url = 'http://localhost:3000/vehicles';
+      try {
+          const response = await fetch(url);
+          if (!response.ok) {
+              throw new Error("Erro ao buscar veículos: " + response.statusText);
+          }
+          this.vehicles = await response.json();
+      } catch (error) {
+          console.error("Erro ao buscar veículos:", error.message);
+      }
+    },
+    async fetchVehicleTypes(){
+      const url = 'http://localhost:3000/vehicle-types';
+      try {
+          const response = await fetch(url);
+          if (!response.ok) {
+              throw new Error("Erro ao buscar os tipos de veículos: " + response.statusText);
+          }
+          const data = await response.json();
+          this.vehicleTypes = data;
+      } catch (error) {
+          console.error("Erro ao buscar os tipos de veículos:", error.message);
+      }
+    },
+    async fetchWorkers() {
+      const url = 'http://localhost:3000/workers';
+      try {
+          const response = await fetch(url);
+          if (!response.ok) {
+              throw new Error("Erro ao buscar os mecânicos: " + response.statusText);
+          }
+          const data = await response.json();
+          this.workers = data;
+      } catch (error) {
+          console.error("Erro ao buscar os mecânicos:", error.message);
+      }
+    },
     getServiceDescription(serviceId) {
         
         if (this.serviceDefinitions) {
@@ -91,15 +131,13 @@ export default {
             return serviceDef ? serviceDef.descr : "Desconhecido";
         }
         return "Desconhecido";
-        },
-
+    },
     formatDate(data) {
       if (data) {
           return `${data.dia}/${data.mes}/${data.ano} ${data.hora}:${data.minutos}`;
       }
       return "-";
     },
-
     sortByDate(services) {
       return services.sort((a, b) => {
         // Verifica se ambos os serviços têm data.
@@ -117,27 +155,65 @@ export default {
           return -1; // Se não houver data em 'b', colocamos 'a' antes de 'b'.
         }
       });
-    }
+    },
+   filterServices(assignedServices) {
 
+    if (!this.user) {
+        console.error("Informações do usuário não disponíveis.");
+        return [];
+      }
+   
+
+    const specializationMap = {
+      "1": ["gerais", "gasolina", "gasoleo"], // Motor a combustão
+      "2": ["gerais", "eletrico"],            // Especialização para elétricos
+      "0": ["gerais", "gasolina", "gasoleo", "eletrico", "hibrido"] // Geral
+    };
+
+    const allowedVehicleTypes = specializationMap[this.user.specializationId] || [];
+
+    return assignedServices.filter(service => {
+      if (service.estado != "atribuido" && service.estado != "parado" || service.workerId !== this.user.id) {
+        return false;
+      }
+
+      const vehicle = this.vehicles.find(v => v.id === service.vehicleId);
+      if (!vehicle) return false;
+
+      const vehicleType = this.vehicleTypes.find(vt => vt.id === vehicle["vehicle-typeId"]);
+      if (!vehicleType) return false;
+
+      const isVehicleTypeAllowed = allowedVehicleTypes.includes(vehicle["vehicle-typeId"]);
+      const isServiceIncludedInVehicleType = vehicleType.serviços.includes(service.servicedefinitionId);
+      const isGeneralService = this.vehicleTypes.some(vt => vt.id === "gerais" && vt.serviços.includes(service.servicedefinitionId));
+
+      return isVehicleTypeAllowed && (isServiceIncludedInVehicleType || isGeneralService);
+    
+    });
   },
-  created() {
-    console.log("console log.");
+  },
+  async created() {
     const userStore = useUserStore();
     if (userStore.isLoggedIn) {
       this.user = userStore.user;
-      this.fetchServiceDefinitions();
-      this.fetchServices();
+      try {
+        await Promise.all([
+          this.fetchServices(),
+          this.fetchServiceDefinitions(),
+          this.fetchVehicleTypes(),
+          this.fetchVehicles(),
+          this.fetchWorkers()
+        ]);
+
+        this.assignedServices = this.filterServices(this.assignedServices);
+        this.sortedAssignedServices = this.sortByDate(this.assignedServices);
+      } catch (error) {
+        console.error("Erro ao carregar dados:", error);
+      }
     } else {
-      console.log("Nenhum usuário logado para buscar serviços.");
       this.$router.push('/Login');
     }
-  },
-  computed: {
-    sortedAssignedServices() {
-      return this.sortByDate(this.assignedServices);
-    }
   }
-
 };
 </script>
 
