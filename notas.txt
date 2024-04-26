@@ -1,66 +1,351 @@
-<template>
-  <div class="service-page">
-    <div v-if="user">
-      <h1>Bem-vindo, {{ user.name }}</h1>
-      <!-- outras partes do template -->
-    </div>
-    <h2>Serviços Agendados:</h2>
-    <ul>
-      <li v-for="service in services" :key="service.id">
-        {{ service.descricao }} - Estado: {{ service.estado }}
-      </li>
-    </ul>
-  </div>
-</template>
-
-<script>
-import { useUserStore } from '../stores';
-
-export default {
-  name: 'PainelServicos',
-  data() {
-    return {
-      user: null,
-      services: []
-    };
-  },
-  methods: {
-    async fetchServices() {
-      if (!this.user || !this.user.id) {
-        console.error("Usuário não está logado ou ID do usuário não está disponível.");
-        return;
-      }
-      
-      const url = `http://localhost:3000/services?clientId=${this.user.id}`;
-      try {
-        const response = await fetch(url);
-        if (!response.ok) {
-          throw new Error("Erro ao buscar serviços: " + response.statusText);
-        }
-        const data = await response.json();
-        this.services = data;
-      } catch (error) {
-        console.error('Erro ao buscar os serviços:', error.message);
-      }
+{
+  "service-definitions": [
+    {
+      "id": "sp",
+      "descr": "Substituir pneus",
+      "duração": 40
     },
-  },
-  created() {
-    const userStore = useUserStore();
-    if (userStore.isLoggedIn) {
-      this.user = userStore.user;
-      this.fetchServices();
-    } else {
-      console.log("Nenhum usuário logado para buscar serviços.");
-      this.$router.push('/Login');
+    {
+      "id": "cr",
+      "descr": "Calibrar rodas",
+      "duração": 20
+    },
+    {
+      "id": "ad",
+      "descr": "Alinhar direção",
+      "duração": 30
+    },
+    {
+      "id": "sct",
+      "descr": "Subsituir calços travões",
+      "duração": 60
+    },
+    {
+      "id": "mot",
+      "descr": "Mudar óleo travões",
+      "duração": 20
+    },
+    {
+      "id": "li",
+      "descr": "Limpeza interior",
+      "duração": 120
+    },
+    {
+      "id": "le",
+      "descr": "Limpeza exterior",
+      "duração": 30
+    },
+    {
+      "id": "sfah",
+      "descr": "Substituir filtro ar habitáculo",
+      "duração": 30
+    },
+    {
+      "id": "mom",
+      "descr": "Mudar óleo motor",
+      "duração": 10
+    },
+    {
+      "id": "sfo",
+      "descr": "Substituir filtro óleo",
+      "duração": 20
+    },
+    {
+      "id": "sfc",
+      "descr": "Substituir filtro combustível",
+      "duração": 30
+    },
+    {
+      "id": "sfam",
+      "descr": "Substituir filtro ar motor",
+      "duração": 30
+    },
+    {
+      "id": "scc",
+      "descr": "Substituir conversor catalítico",
+      "duração": 30
+    },
+    {
+      "id": "sba",
+      "descr": "Substituir bateria de arranque",
+      "duração": 30
+    },
+    {
+      "id": "svi",
+      "descr": "Substituir velas de incandescência",
+      "duração": 30
+    },
+    {
+      "id": "sfp",
+      "descr": "Substituir filtro de partículas",
+      "duração": 30
+    },
+    {
+      "id": "rfp",
+      "descr": "Regenerar filtro de partículas",
+      "duração": 30
+    },
+    {
+      "id": "sva",
+      "descr": "Substituir válvula do acelerador",
+      "duração": 30
+    },
+    {
+      "id": "svi",
+      "descr": "Substituir velas de ignição",
+      "duração": 30
+    },
+    {
+      "id": "adb",
+      "descr": "Avaliar desempenho da bateria",
+      "duração": 30
+    },
+    {
+      "id": "sb",
+      "descr": "Substituir bateria",
+      "duração": 20
     }
-  }
-};
-</script>
-
-<style scoped>
-.service-page {
-  max-width: 500px;
-  margin: auto;
-  text-align: center;
+  ],
+  "vehicle-types": [
+    {
+      "id": "gerais",
+      "serviços": [
+        "sp",
+        "cr",
+        "ad",
+        "sct",
+        "mot",
+        "li",
+        "le",
+        "sfah"
+      ]
+    },
+    {
+      "id": "gasolina",
+      "serviços": [
+        "mom",
+        "sfo",
+        "sfc",
+        "sfam",
+        "scc",
+        "sba",
+        "sva",
+        "svi"
+      ]
+    },
+    {
+      "id": "gasoleo",
+      "serviços": [
+        "mom",
+        "sfo",
+        "sfc",
+        "sfam",
+        "scc",
+        "sba",
+        "svi",
+        "sfp",
+        "rfp"
+      ]
+    },
+    {
+      "id": "eletrico",
+      "serviços": [
+        "adb",
+        "sb"
+      ]
+    },
+    {
+      "id": "hibrido",
+      "serviços": [
+        "mom",
+        "sfo",
+        "sfc",
+        "sfam",
+        "scc",
+        "sba",
+        "sva",
+        "svi",
+        "adb",
+        "sb"
+      ]
+    }
+  ],
+  "clients": [
+    {
+      "id": "123",
+      "nome": "João Silva",
+      "email": "js@imail.com",
+      "telefone": "912345678"
+    },
+    {
+      "id": "124",
+      "nome": "Maria Santos",
+      "email": "jms@imail.com",
+      "telefone": "912345679"
+    },
+    {
+      "id": "125",
+      "nome": "José Pereira",
+      "email": "jp@imail.com",
+      "telefone": "912345680"
+    }
+  ],
+  "vehicles": [
+    {
+      "id": "08-25-AA",
+      "clientId": "123",
+      "vehicle-typeId": "gasolina",
+      "cilindrada": 1000,
+      "kms": 200000
+    },
+    {
+      "id": "AH-31-BB",
+      "clientId": "124",
+      "vehicle-typeId": "gasoleo",
+      "cilindrada": 2000,
+      "kms": 120000
+    },
+    {
+      "id": "AH-32-44",
+      "clientId": "123",
+      "vehicle-typeId": "eletrico",
+      "potencia": 200,
+      "kms": 20000
+    },
+    {
+      "id": "AH-21-25",
+      "clientId": "125",
+      "vehicle-typeId": "hibrido",
+      "cilindrada": 1000,
+      "potencia": 200,
+      "kms": 80000
+    }
+  ],
+  "services": [
+    {
+      "id": "s31",
+      "vehicleId": "08-25-AA",
+      "workerId": "1",
+      "servicedefinitionId": "sp",
+      "estado": "parado",
+      "agendamento": "filaDeEspera",
+      "duracao": 20,
+      "descrição": "Colocar XPTO 225R15",
+      "servicosextra": ""
+    },
+    {
+      "id": "s32",
+      "vehicleId": "AH-31-BB",
+      "workerId": "1",
+      "servicedefinitionId": "li",
+      "estado": "agendado",
+      "agendamento": "programado",
+      "data": {
+        "dia": 26,
+        "mes": 3,
+        "ano": 2024,
+        "hora": 14,
+        "minutos": 15
+      },
+      "duracao": 20,
+      "descrição": "Atenção ao banco do condutor.",
+      "servicosextra": ""
+    },
+    {
+      "id": "s33",
+      "vehicleId": "AH-32-44",
+      "servicedefinitionId": "le",
+      "workerId": "2",
+      "estado": "agendado",
+      "agendamento": "filaDeEspera",
+      "duracao": 20,
+      "descrição": "Ver jantes."
+    },
+    {
+      "id": "s34",
+      "vehicleId": "AH-21-25",
+      "servicedefinitionId": "sfc",
+      "workerId": "2",
+      "estado": "agendado",
+      "agendamento": "filaDeEspera",
+      "duracao": 20,
+      "descrição": "Falta o filtro.",
+      "servicosextra": ""
+    },
+    {
+      "id": "s12",
+      "vehicleId": "08-25-AA",
+      "servicedefinitionId": "sp",
+      "workerId": "1",
+      "estado": "realizado",
+      "agendamento": "filaDeEspera",
+      "duracao": 20,
+      "descrição": "Colocar XPTO 225R15",
+      "servicosextra": ""
+    },
+    {
+      "id": "s24",
+      "vehicleId": "08-25-AA",
+      "servicedefinitionId": "li",
+      "workerId": "1",
+      "estado": "agendado",
+      "agendamento": "programado",
+      "data": {
+        "dia": 2,
+        "mes": 2,
+        "ano": 2024,
+        "hora": 14,
+        "minutos": 15
+      },
+      "duracao": 20,
+      "descrição": "shampoo XPTO",
+      "servicosextra": ""
+    }
+    
+  ],
+  "workers": [
+    {
+      "id": "1",
+      "password": "pass",
+      "name": "Diogo",
+      "specialization": "Motor a combustão",
+      "specializationId": "1",
+      "servicesDone": [],
+      "age": "55",
+      "profession": "Mecânico",
+      "localization": "Braga",
+      "education": "Curso básico de mecânica automóvel",
+      "interests": "Automóveis, futebol, séries",
+      "objectives": "Manter o seu emprego, aprender mais sobre carros elétricos",
+      "challenges": "Adaptar-se às novas tecnologias, evitar erros e reclamações",
+      "solutions": "Pesquisar na internet, assistir a vídeos e tutoriais, pedir ajuda aos colegas mais novos",
+      "quotes": "Eu gosto de trabalhar com carros, mas às vezes sinto que não estou preparado para lidar com os novos modelos. Eu quero mostrar o meu valor na empresa, mas quando me atribuem trabalho fora da minha especialização sou obrigado a ir à secretaria dizer que não o posso realizar e temo ficar mal visto. O novo sistema devia ajudar a resolver isso. Espero que seja de utilização fácil."
+    },
+    {
+      "id": "2",
+      "password": "mecanico123",
+      "name": "Diana",
+      "specialization": "Geral",
+      "specializationId": "0",
+      "servicesDone": [],
+      "age": "24",
+      "profession": "Mecânica",
+      "localization": "Braga",
+      "education": "Curso técnico de mecânica automóvel",
+      "interests": "Tecnologia, automobilismo, ciência, livros",
+      "objectives": "Destacar-se na sua área, progredir na carreira",
+      "challenges": "Lidar com a desconfiança dos clientes, adaptar-se às novas tecnologias, dominar o novo sistema informático",
+      "solutions": "Pesquisar na internet, fazer cursos e certificações, consultar manuais e revistas técnicas, usar o sistema informático para otimizar o seu trabalho",
+      "quotes": "Eu amo o que faço, mas sei que preciso me atualizar constantemente. Os carros estão cada vez mais sofisticados e eu quero estar preparada para qualquer desafio. O novo sistema informático é uma oportunidade para eu melhorar a minha produtividade e a qualidade do meu serviço."
+    },
+    {
+      "id": "3",
+      "password": "eletric456",
+      "name": "Luis",
+      "specialization": "1",
+      "servicesDone": []
+    }
+  ]
 }
-</style>
+
+

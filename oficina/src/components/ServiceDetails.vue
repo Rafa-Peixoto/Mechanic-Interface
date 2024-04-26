@@ -38,12 +38,12 @@ export default {
       serviceDefinitions: [],
       clients: [],
       vehicles: [],
-      estados: ['atribuido', 'agendado', 'parado', 'realizado'],
+      vehicleTypes: [],
+      estados: ['atribuido', 'agendado', 'parado', 'realizado', 'iniciado'],
       endTime: "",
       selectedExtraServices: []
     };
   },
-  
   methods: {
     async fetchServiceDetails() {
       const serviceId = this.$route.params.serviceId;
@@ -77,21 +77,56 @@ export default {
       const serviceId = this.$route.params.serviceId;
       try {
         const response = await fetch(`http://localhost:3000/services/${serviceId}`, {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            ...this.serviceDetails, // Mantém todas as outras informações intactas
-            estado: this.serviceDetails.estado // Atualiza apenas o estado
-          })
-        });
-        if (!response.ok) {
-          throw new Error("Erro ao atualizar o estado do serviço.");
-        }
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          ...this.serviceDetails, // Mantém todas as outras informações intactas
+          estado: this.serviceDetails.estado // Atualiza apenas o estado
+        })
+      });
+      if (!response.ok) {
+        throw new Error("Erro ao atualizar o estado do serviço.");
+      }
+      if (this.serviceDetails.estado === 'realizado') {
+        await this.updateWorkerServicesDone(serviceId);
+      }
         console.log('Estado do serviço atualizado com sucesso.');
       } catch (error) {
         console.error('Erro ao atualizar o estado do serviço:', error.message);
+      }
+    },
+
+    async updateWorkerServicesDone(serviceId) {
+    try {
+      const workerId = this.serviceDetails.workerId; 
+        
+      this.clearOptions
+      const workerResponse = await fetch(`http://localhost:3000/workers/${workerId}`);
+      if (!workerResponse.ok) {
+        throw new Error("Erro ao buscar os detalhes do trabalhador.");
+      }
+      const workerData = await workerResponse.json();
+
+      // Adicione o ID do serviço aos servicesDone do trabalhador
+      workerData.servicesDone.push(serviceId);
+
+      // Atualize os detalhes do trabalhador no servidor
+      const updateResponse = await fetch(`http://localhost:3000/workers/${workerId}`, {
+          method: 'PUT',
+          headers: {
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(workerData)
+        });
+        if (!updateResponse.ok) {
+          throw new Error("Erro ao atualizar os serviços realizados do trabalhador.");
+        }
+
+        console.log('Serviço adicionado aos serviços realizados do trabalhador com sucesso.');
+      } catch (error) {
+          console.error('Erro ao adicionar serviço aos serviços realizados do trabalhador:', error.message);
       }
     },
 
@@ -127,7 +162,7 @@ export default {
       try{
             const response = await fetch(url);
             if(!response.ok){
-                throw new Error("Erro ao buscar as informações d cliente: " + response.statusText);
+                throw new Error("Erro ao buscar as informações do cliente: " + response.statusText);
             }
             const data = await response.json();
             this.clients = data;
@@ -187,6 +222,21 @@ export default {
           return serviceDef.duração;
       }
     },
+
+    async fetchVehicleTypes() {
+      const url = "http://localhost:3000/vehicle-types";
+      try {
+        const response = await fetch(url);
+        if (!response.ok) {
+          throw new Error("Erro ao buscar os tipos de veículos: " + response.statusText);
+        }
+        const data = await response.json();
+        this.vehicleTypes = data;
+      } catch (error) {
+        console.error("Erro ao buscar os tipos de veículos:", error.message);
+      }
+    },
+
     
     async addExtraService(serviceId) {
       const serviceDetails = this.serviceDetails;
@@ -201,6 +251,7 @@ export default {
             workerId: '', 
             servicedefinitionId: serviceId,
             estado: 'agendado',
+            data: {},
             duracao: this.getServiceDuration(serviceId),
             descrição: '',
             servicosextra: ''
@@ -218,16 +269,40 @@ export default {
     },
 
     handleServicoExtra() {
-      // Atualiza a propriedade selectedExtraServices com os serviços extras selecionados
-      const selectedOptions = Array.from(
-        this.$refs.servicoExtraSelect.selectedOptions,
-        option => option.value
-      );
-      this.serviceDetails.selectedExtraServices = selectedOptions;
-      // Adiciona cada serviço extra selecionado
-      selectedOptions.forEach(serviceId => {
-        this.addExtraService(serviceId);
+      // Limpa as opções do select antes de adicionar as opções disponíveis
+      this.clearOptions();
+
+      // Obtém o tipo de veículo do serviço atual
+      const vehicleId = this.serviceDetails.vehicleId;
+      const vehicle = this.vehicles.find(vehicle => vehicle.id === vehicleId);
+      const vehicleTypeId = vehicle['vehicle-typeId'];
+
+      // Encontra o tipo de veículo correspondente
+      const vehicleType = this.vehicleTypes.find(type => type.id === vehicleTypeId);
+
+      if (!vehicleType) {
+        console.error('Tipo de veículo não encontrado:', vehicleTypeId);
+        return;
+      }
+
+      // Obtém os serviços extras disponíveis para o tipo de veículo
+      const availableServices = this.serviceDefinitions.filter(service => vehicleType['serviços'].includes(service.id));
+
+      // Adiciona as opções disponíveis ao select
+      availableServices.forEach(service => {
+        const option = document.createElement('option');
+        option.value = service.id;
+        option.text = service.descr;
+        this.$refs.servicoExtraSelect.appendChild(option);
       });
+    },
+
+    clearOptions() {
+      // Remove todas as opções do select
+      const select = this.$refs.servicoExtraSelect;
+      while (select.firstChild) {
+        select.removeChild(select.firstChild);
+      }
     }
 
   },
@@ -236,7 +311,9 @@ export default {
     await this.fetchServiceDefinitions();
     await this.fetchClients();
     await this.fetchVehicles();
-    this.endTime = await this.calculateEndTime()
+    await this.fetchVehicleTypes();
+    this.endTime = await this.calculateEndTime();
+    this.handleServicoExtra();
   }
 };
 </script>

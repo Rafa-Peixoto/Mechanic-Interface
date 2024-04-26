@@ -190,7 +190,7 @@ export default {
     const allowedVehicleTypes = specializationMap[this.user.specializationId] || [];
 
     return assignedServices.filter(service => {
-      if (service.estado != "atribuido" && service.estado != "parado" || service.workerId !== this.user.id) {
+      if (service.estado != "atribuido" && service.estado != "parado" && service.estado != "iniciado"|| service.workerId !== this.user.id) {
         return false;
       }
 

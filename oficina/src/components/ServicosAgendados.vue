@@ -36,6 +36,11 @@
             </tr>
         </tbody>
     </table>
+      <div class="add-service-button">
+        <router-link to="/AdicionarServico">
+          <button class="add-button">+</button>
+        </router-link>
+      </div>
   </div>
 </template>
 
@@ -128,17 +133,14 @@ export default {
       const isGeneral = this.vehicleTypes.some(vt => vt.id == 'gerais' && vt.serviços.includes(serviceDefinitionId));
       const isGasolineDiesel = this.vehicleTypes.some(vt => (vt.id == 'gasolina' || vt.id == 'gasoleo') && vt.serviços.includes(serviceDefinitionId));
       const isElectricHybrid = this.vehicleTypes.some(vt => (vt.id == 'eletrico' || vt.id == 'hibrido') && vt.serviços.includes(serviceDefinitionId));
-      console.log("Isgeneral",isGeneral);
-      // Retorna um valor com base na condição encontrada
       if (isGeneral) {
-        return 1;  // Presente nos tipos de veículos gerais
+        return 1;
       } else if (isGasolineDiesel) {
-        return 2;  // Presente nos tipos de veículos de gasolina e gasóleo
+        return 2;  
       } else if (isElectricHybrid) {
-        return 3;  // Presente nos tipos de veículos elétricos e híbridos
+        return 3;  
       }
-
-      return 0;  // Não encontrado em nenhuma lista específica
+      return 0;  
     },
 
 
@@ -175,7 +177,6 @@ export default {
     },
 
     filterServices(scheduledServices) {
-      console.log("Teste2",this.scheduleServices);
 
       if (!this.user) {
         console.error("Informações do usuário não disponíveis.");
@@ -191,10 +192,9 @@ export default {
 
       // Obter os tipos de veículos permitidos com base na especialização do mecânico
       const allowedVehicleTypes = specializationMap[this.user.specializationId] || [];
-        console.log("Teste1",allowedVehicleTypes);
 
       return scheduledServices.filter(service => {
-        if (service.estado !== "agendado" || service.workerId !== this.user.id) {
+        if (service.estado !== "agendado") {
           return false;
         }
 
@@ -225,7 +225,9 @@ export default {
             this.fetchVehicles(),
             this.fetchWorkers()
         ]);
+        console.log("teste",this.scheduledServices);
         this.scheduleServices = this.filterServices(this.scheduleServices);
+        
     } else {
         console.log("Nenhum usuário logado para buscar serviços.");
         this.$router.push('/Login');
@@ -279,6 +281,27 @@ export default {
   padding: 0px;
   font-size: 25px;
 }
+
+.add-service-btn {
+  position: fixed; /* Fixa o botão na tela */
+  left: 10px;      /* Espaço da borda esquerda */
+  bottom: 10px;    /* Espaço da borda inferior */
+}
+
+.add-service-btn button {
+  background-color: #4CAF50; /* Cor de fundo */
+  color: white;              /* Cor do texto */
+  border: none;              /* Sem borda */
+  padding: 10px 20px;        /* Padding para aumentar o tamanho */
+  border-radius: 50%;        /* Borda arredondada para forma de círculo */
+  font-size: 24px;           /* Tamanho da fonte */
+  cursor: pointer;           /* Cursor indicativo de clique */
+}
+
+.add-service-btn button:hover {
+  background-color: #45a049; /* Cor ao passar o mouse */
+}
+
 
 @media screen and (max-width: 600px) {
   .services-table, .services-table th, .services-table td {

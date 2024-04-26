@@ -227,8 +227,7 @@
       "vehicleId": "08-25-AA",
       "workerId": "1",
       "servicedefinitionId": "sp",
-      "estado": "atribuido",
-      "agendamento": "filaDeEspera",
+      "estado": "realizado",
       "duracao": 20,
       "descrição": "Colocar XPTO 225R15",
       "servicosextra": ""
@@ -239,7 +238,6 @@
       "workerId": "1",
       "servicedefinitionId": "mom",
       "estado": "atribuido",
-      "agendamento": "programado",
       "data": {
         "dia": 26,
         "mes": 3,
@@ -249,7 +247,8 @@
       },
       "duracao": 20,
       "descrição": "Atenção ao banco do condutor.",
-      "servicosextra": ""
+      "servicosextra": "",
+      "selectedExtraServices": "svi"
     },
     {
       "id": "s33",
@@ -257,7 +256,6 @@
       "servicedefinitionId": "le",
       "workerId": "2",
       "estado": "agendado",
-      "agendamento": "filaDeEspera",
       "duracao": 20,
       "descrição": "Ver jantes."
     },
@@ -267,7 +265,6 @@
       "servicedefinitionId": "sfc",
       "workerId": "2",
       "estado": "agendado",
-      "agendamento": "filaDeEspera",
       "duracao": 20,
       "descrição": "Falta o filtro.",
       "servicosextra": ""
@@ -288,7 +285,7 @@
       "vehicleId": "08-25-AA",
       "servicedefinitionId": "li",
       "workerId": "1",
-      "estado": "agendado",
+      "estado": "realizado",
       "agendamento": "programado",
       "data": {
         "dia": 2,
@@ -309,7 +306,11 @@
       "name": "Diogo",
       "specialization": "Motor a combustão",
       "specializationId": "1",
-      "servicesDone": [],
+      "servicesDone": [
+        "s12",
+        "s31",
+        "s24"
+      ],
       "age": "55",
       "profession": "Mecânico",
       "localization": "Braga",
@@ -336,13 +337,6 @@
       "challenges": "Lidar com a desconfiança dos clientes, adaptar-se às novas tecnologias, dominar o novo sistema informático",
       "solutions": "Pesquisar na internet, fazer cursos e certificações, consultar manuais e revistas técnicas, usar o sistema informático para otimizar o seu trabalho",
       "quotes": "Eu amo o que faço, mas sei que preciso me atualizar constantemente. Os carros estão cada vez mais sofisticados e eu quero estar preparada para qualquer desafio. O novo sistema informático é uma oportunidade para eu melhorar a minha produtividade e a qualidade do meu serviço."
-    },
-    {
-      "id": "3",
-      "password": "eletric456",
-      "name": "Luis",
-      "specialization": "1",
-      "servicesDone": []
     }
   ]
 }
