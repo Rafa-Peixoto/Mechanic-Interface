@@ -188,6 +188,16 @@
       "veiculos": [
         null
       ]
+    },
+    {
+      "id": "303d",
+      "nome": "Rui",
+      "telefone": "8987878",
+      "nif": "111",
+      "morada": "casa",
+      "veiculos": [
+        null
+      ]
     }
   ],
   "vehicles": [
@@ -230,6 +240,17 @@
       "jantes": "17",
       "kms": "100000",
       "vehicle-typeId": "gasoleo"
+    },
+    {
+      "id": "99-99-99",
+      "clientId": "303d",
+      "cilindrada": "1300",
+      "potencia": "",
+      "marca": "bmw",
+      "modelo": "116",
+      "jantes": "19",
+      "kms": "10000",
+      "vehicle-typeId": "gasolina"
     }
   ],
   "services": [
@@ -238,17 +259,17 @@
       "vehicleId": "08-25-AA",
       "workerId": "1",
       "servicedefinitionId": "sp",
-      "estado": "realizado",
+      "estado": "atribuido",
       "duracao": 20,
-      "descrição": "Colocar XPTO 225R15",
+      "descrição": "ola",
       "servicosextra": ""
     },
     {
       "id": "s32",
       "vehicleId": "AH-31-BB",
-      "workerId": "",
+      "workerId": "1",
       "servicedefinitionId": "mom",
-      "estado": "agendado",
+      "estado": "realizado",
       "data": {
         "dia": 26,
         "mes": 3,
@@ -309,11 +330,11 @@
       "servicosextra": ""
     },
     {
-      "id": "cb41",
-      "vehicleId": "55-55-55",
-      "servicedefinitionId": "mot",
-      "workerId": "",
-      "estado": "agendado",
+      "id": "0048",
+      "vehicleId": "99-99-99",
+      "servicedefinitionId": "le",
+      "workerId": "1",
+      "estado": "realizado",
       "data": {
         "dia": "",
         "mes": "",
@@ -321,7 +342,7 @@
         "hora": "",
         "minutos": ""
       },
-      "duracao": 20,
+      "duracao": 30,
       "descricao": "",
       "servicosextra": ""
     }
@@ -342,7 +363,9 @@
         "s12",
         "s31",
         "s31",
-        "s32"
+        "s32",
+        "s32",
+        "0048"
       ],
       "age": "55",
       "profession": "Mecânico",

@@ -28,6 +28,17 @@
       <p>Nome: {{ getClientName() }}</p>
       <p>Contacto: {{ getClientContact() }}</p>
     </div>
+
+    <div class="vehicle-info">
+      <h1>Detalhes do Veículo:</h1>
+      <p>Matrícula: {{ getVehicleDetails()?.id || 'Desconhecido' }}</p>
+      <p>Marca: {{ getVehicleDetails()?.marca || 'Desconhecido' }}</p>
+      <p>Modelo: {{ getVehicleDetails()?.modelo || 'Desconhecido' }}</p>
+      <p>Cilindrada: {{ getVehicleDetails()?.cilindrada || 'Desconhecido' }}</p>
+      <p>Potencia: {{ getVehicleDetails()?.potencia || 'Desconhecido' }}</p>
+      <p>Jantes: {{ getVehicleDetails()?.jantes || 'Desconhecido' }}</p>
+      <p>Kilómetros: {{ getVehicleDetails()?.kms || 'Desconhecido' }}</p>
+    </div>
   </div>
 </template>
 
@@ -303,13 +314,16 @@ export default {
         this.$refs.servicoExtraSelect.appendChild(option);
       });
     },
-
-    // Função para criar e armazenar o serviço extra na base de dados
     async handleCreateServicoExtra(event) {
       const selectedServiceId = event.target.value;
       await this.addExtraService(selectedServiceId);
     },
-
+    getVehicleDetails() {
+      if (this.serviceDetails && this.serviceDetails.vehicleId && this.vehicles.length > 0) {
+        return this.vehicles.find(vehicle => vehicle.id === this.serviceDetails.vehicleId);
+      }
+      return null; // Se o veículo não for encontrado ou a lista de veículos ainda não estiver carregada
+    },
 
     clearOptions() {
       // Remove todas as opções do select
@@ -406,6 +420,7 @@ textarea {
   padding: 8px;
   border-radius: 4px;
   border: 1px solid #ccc;
+  resize: none;
   box-sizing: border-box;
 }
 
@@ -436,6 +451,25 @@ textarea:focus {
 }
 
 .client-info h1 {
+  color: #333;
+  font-size: 18px;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 4px;
+  margin-bottom: 12px;
+}
+
+
+.vehicle-info {
+  max-width: 500px;
+  margin: 40px auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  text-align: left;
+}
+
+.vehicle-info h1 {
   color: #333;
   font-size: 18px;
   border-bottom: 1px solid #ccc;
