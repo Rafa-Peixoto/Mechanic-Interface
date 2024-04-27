@@ -18,7 +18,9 @@
           <option v-for="serviceDef in serviceDefinitions" :value="serviceDef.id" :key="serviceDef.id">{{ serviceDef.descr }}</option>
         </select>
       </p>
+      <button @click="confirmDeleteService">Eliminar Serviço</button>
     </div>
+    
     <div class="client-info">
       <h1>Detalhes do Cliente:</h1>
       <p>Nome: {{ getClientName() }}</p>
@@ -313,6 +315,30 @@ export default {
       while (select.firstChild) {
         select.removeChild(select.firstChild);
       }
+    },
+    confirmDeleteService() {
+      if (window.confirm("Tem certeza que deseja eliminar este serviço?")) {
+        this.deleteService();
+      }
+    },
+
+    // Método para eliminar o serviço
+    deleteService() {
+      const serviceId = this.$route.params.serviceId;
+      fetch(`http://localhost:3000/services/${serviceId}`, {
+        method: 'DELETE'
+      })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Erro ao eliminar o serviço.');
+        }
+        alert('Serviço eliminado com sucesso!');
+        this.$router.push('/');  // Redirecionar o usuário para outra página, por exemplo, a lista de serviços
+      })
+      .catch(error => {
+        console.error('Erro ao eliminar o serviço:', error.message);
+        alert('Não foi possível eliminar o serviço. Por favor, tente novamente mais tarde.');
+      });
     }
     
   },
@@ -354,6 +380,7 @@ export default {
 .service-page h3:last-child { /* Citação */
   font-style: italic;
 }
+
 
 @media (max-width: 768px) {
   .service-page {
