@@ -10,34 +10,36 @@
     </div>
 
     <!-- Tabela de serviços -->
-    <table class="services-table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Automóvel</th>
-                <th>Serviço</th>
-                <th>Estado</th>
-                <th>Posto</th>
-                <th>Data de Agendamento</th>
-                <th>Data de Entrega</th>
-                <th>Duração</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr v-for="service in terminatedServices" :key="service.id">
-                <td>
-                    <router-link :to="{ name: 'ServiceDetails', params: { serviceId: service.id }}">{{ service.id }}</router-link>
-                </td>
-                <td>{{ service.vehicleId }}</td>
-                <td>{{ getServiceDescription(service.servicedefinitionId) }}</td>
-                <td>{{ service.estado }}</td>
-                <td>{{ getPostoDescription(service.servicedefinitionId)}}</td>
-                <td>{{ formatDate(service.data) }}</td>
-                <td>{{ formatDate(service.dataTerminado) }}</td>
-                <td>{{ service.duracao }}</td>
-            </tr>
-        </tbody>
-    </table>
+    <div class="table-container">
+      <table class="services-table">
+          <thead>
+              <tr>
+                  <th>Id</th>
+                  <th>Automóvel</th>
+                  <th>Serviço</th>
+                  <th>Estado</th>
+                  <th>Posto</th>
+                  <th>Data</th>
+                  <th>Data de Entrega</th>
+                  <th>Duração</th>
+              </tr>
+          </thead>
+          <tbody>
+              <tr v-for="service in terminatedServices" :key="service.id">
+                  <td>
+                      <router-link :to="{ name: 'ServiceDetails', params: { serviceId: service.id }}">{{ service.id }}</router-link>
+                  </td>
+                  <td data-label="Id">{{ service.vehicleId }}</td>
+                  <td data-label="Serviço">{{ getServiceDescription(service.servicedefinitionId) }}</td>
+                  <td data-label="Estado">{{ service.estado }}</td>
+                  <td data-label="Posto">{{ getPostoDescription(service.servicedefinitionId)}}</td>
+                  <td data-label="Data">{{ formatDate(service.data) }}</td>
+                  <td data-label="Data de Entrega">{{ formatDate(service.dataTerminado) }}</td>
+                  <td data-label="Duração">{{ service.duracao }}</td>
+              </tr>
+          </tbody>
+      </table>
+    </div>
   </div>
 </template>
 
@@ -167,6 +169,7 @@ export default {
   }
 };
 </script>
+
 <style scoped>
 .service-page {
   max-width: 1000px;
@@ -193,7 +196,7 @@ export default {
 }
 
 .services-table tr:nth-child(even) {
-  background-color: #f2f2f2;
+  background-color: #aec4ae;
 }
 
 .services-table tr:hover {
@@ -214,22 +217,55 @@ export default {
 }
 
 @media screen and (max-width: 600px) {
-  .services-table, .services-table th, .services-table td {
+  /* Faz com que cada célula da tabela seja exibida como um bloco, 
+     o que as coloca em uma coluna única */
+  .services-table, .services-table tbody, .services-table th, .services-table td, .services-table tr {
     display: block;
   }
 
-  .services-table th, .services-table td {
-    text-align: right;
-    padding-left: 50%;
-    text-indent: -25px;
+  /* Esconde os cabeçalhos da tabela na vista de tela pequena */
+  .services-table thead {
+    display: none;
   }
 
-  .services-table th {
+  .services-table td {
+    /* Cada célula ocupa 100% da largura da tela disponível */
+    width: 100%;
+    /* As células têm uma borda na parte inferior para separá-las visualmente */
+    border-bottom: 1px solid #ddd;
+    /* Posiciona o texto no início (esquerda) da célula */
+    text-align: left;
+    /* Adiciona um espaço antes do texto da célula para o rótulo */
+    padding-left: 35%;
+    /* Mantém o texto alinhado verticalmente ao centro */
+    position: relative;
+    /* Espaçamento interno no topo e na base de cada célula */
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+  }
+
+  .services-table td:before {
+    /* Usa o pseudo-elemento ::before para adicionar o nome do cabeçalho 
+       antes de cada célula */
+    content: attr(data-label);
+    /* Posiciona o pseudo-elemento no início (esquerda) da célula */
     position: absolute;
+    /* Posiciona o pseudo-elemento na esquerda da célula com algum espaço */
     left: 0;
-    width: 45%;
-    top: auto;
-    background-color: #4CAF50;
+    /* Espaçamento interno no topo do pseudo-elemento */
+    padding-top: 0.5em;
+    /* Define a largura do rótulo para 30% da célula */
+    width: 30%;
+    /* Alinha o texto à esquerda */
+    text-align: left;
+    /* Negrito para destacar que é o rótulo */
+    font-weight: bold;
+  }
+
+  /* Ajusta o posicionamento da célula para que ela não sobreponha o rótulo */
+  .services-table td {
+    padding-left: 40%;
   }
 }
+
 </style>
