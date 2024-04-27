@@ -173,21 +173,11 @@
   "clients": [
     {
       "id": "123",
+      "nif": "123456789",
       "nome": "João Silva",
       "email": "js@imail.com",
-      "telefone": "912345678"
-    },
-    {
-      "id": "124",
-      "nome": "Maria Santos",
-      "email": "jms@imail.com",
-      "telefone": "912345679"
-    },
-    {
-      "id": "125",
-      "nome": "José Pereira",
-      "email": "jp@imail.com",
-      "telefone": "912345680"
+      "telefone": "912345678",
+      "veiculos": []
     }
   ],
   "vehicles": [
@@ -247,8 +237,7 @@
       },
       "duracao": 20,
       "descrição": "Atenção ao banco do condutor.",
-      "servicosextra": "",
-      "selectedExtraServices": "svi"
+      "servicosextra": ""
     },
     {
       "id": "s33",
@@ -309,7 +298,13 @@
       "servicesDone": [
         "s12",
         "s31",
-        "s24"
+        "s24",
+        "s31",
+        "s24",
+        "s12",
+        "s31",
+        "s31",
+        "s32"
       ],
       "age": "55",
       "profession": "Mecânico",

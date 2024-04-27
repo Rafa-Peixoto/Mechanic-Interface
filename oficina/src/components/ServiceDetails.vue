@@ -29,7 +29,7 @@
 
 
 <script>
-
+import { useUserStore } from '../stores';
 
 export default {
   data() {
@@ -131,6 +131,12 @@ export default {
     },
 
     handleEstadoChange() {
+      if (['agendado'].includes(this.serviceDetails.estado)) {
+        this.serviceDetails.workerId = "";
+      }
+      if (['atribuido', 'iniciado', 'parado'].includes(this.serviceDetails.estado)) {
+        this.serviceDetails.workerId = this.user.id;
+      }
         this.updateServiceStatus();
     },
 
@@ -311,13 +317,17 @@ export default {
     
   },
   async created() {
-    await this.fetchServiceDetails();
-    await this.fetchServiceDefinitions();
-    await this.fetchClients();
-    await this.fetchVehicles();
-    await this.fetchVehicleTypes();
-    this.endTime = await this.calculateEndTime();
-    this.handleAvailableServices();
+    const userStore = useUserStore();
+    if (userStore.isLoggedIn) {
+      this.user = userStore.user;
+      await this.fetchServiceDetails();
+      await this.fetchServiceDefinitions();
+      await this.fetchClients();
+      await this.fetchVehicles();
+      await this.fetchVehicleTypes();
+      this.endTime = await this.calculateEndTime();
+      this.handleAvailableServices();
+    }
   }
 };
 </script>
