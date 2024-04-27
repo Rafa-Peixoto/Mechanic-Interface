@@ -83,6 +83,7 @@
 <script>
 import { useUserStore } from '../stores';
 
+
 export default {
   name: 'PainelServicos',
   data() {
@@ -90,10 +91,10 @@ export default {
       user: null,
       services: [],
       vehicles: [],
-      clients: [],
-      serviceDefinitions: [],
-      vehicleTypes: [],
       workers: [],
+      clients: [],
+      vehicleTypes: [],
+      serviceDefinitions: [],
       newClient: {
         id: "",
         nif: "",
@@ -223,7 +224,13 @@ export default {
 
       return 0;  // Não encontrado em nenhuma lista específica
     },
-
+    getServiceDuration(serviceId) {
+        
+      if (this.serviceDefinitions) {
+          const serviceDef = this.serviceDefinitions.find(def => def.id === serviceId);
+          return serviceDef.duração;
+      }
+    },
     formatDate(data) {
       if (data) {
           return `${data.dia}/${data.mes}/${data.ano} ${data.hora}:${data.minutos}`;
@@ -254,7 +261,7 @@ export default {
     addVehicle() {
       // Implementar adição de veículo
     },
-    scheduleService() {
+   scheduleService() {
     // Verificar se o NIF inserido corresponde a algum cliente na base de dados
     const client = this.clients.find(client => client.nif === this.newService.nif);
     if (!client) {
@@ -263,16 +270,14 @@ export default {
     }
 
     // Verificar se o veículo está na base de dados
-    console.log("matricula",this.newService.vehicleId);
     const vehicle = this.vehicles.find(vehicle => vehicle.id === this.newService.vehicleId);
     if (!vehicle) {
       alert("É necessário adicionar este veículo à base de dados.");
       return;
     }
-
+    const serviceDuration = this.getServiceDuration(this.selectedService);
     // Se ambas as verificações forem bem-sucedidas, enviar a solicitação POST para adicionar o serviço à base de dados
     const newServiceData = {
-      id: "",
       vehicleId: vehicle.id,
       servicedefinitionId: this.selectedService, // Considerando que o serviço selecionado já está definido corretamente
       workerId: "", // Preencher com o ID do trabalhador responsável, se necessário
@@ -284,7 +289,7 @@ export default {
         hora: "",
         minutos: "",
       },
-      duracao: "", // Preencher com a duração do serviço, se necessário
+      duracao: serviceDuration, // Preencher com a duração do serviço, se necessário
       descricao: "", // Considerando que a descrição do serviço foi inserida corretamente
       servicosextra: "" // Preencher com serviços extras, se necessário
     };
