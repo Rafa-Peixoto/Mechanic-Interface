@@ -12,7 +12,9 @@
       </p>
       <p>Duração: {{ serviceDetails && serviceDetails.duracao }}</p>
       <p>Hora prevista de término: {{ endTime }}</p>
-      <p>Descrição: {{ serviceDetails && serviceDetails.descrição }}</p>
+      <p>Descrição:
+         <textarea v-model="serviceDetails.descrição" @blur="updateServiceDetails"></textarea>
+      </p>
       <p>Serviços Extra:
         <select v-model="serviceDetails.selectedExtraServices" @change="handleCreateServicoExtra" ref="servicoExtraSelect" class="estado">
           <option v-for="serviceDef in serviceDefinitions" :value="serviceDef.id" :key="serviceDef.id">{{ serviceDef.descr }}</option>
@@ -321,8 +323,6 @@ export default {
         this.deleteService();
       }
     },
-
-    // Método para eliminar o serviço
     deleteService() {
       const serviceId = this.$route.params.serviceId;
       fetch(`http://localhost:3000/services/${serviceId}`, {
@@ -338,6 +338,25 @@ export default {
       .catch(error => {
         console.error('Erro ao eliminar o serviço:', error.message);
         alert('Não foi possível eliminar o serviço. Por favor, tente novamente mais tarde.');
+      });
+    },
+    updateServiceDetails() {
+      const serviceId = this.$route.params.serviceId;
+      fetch(`http://localhost:3000/services/${serviceId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(this.serviceDetails)
+      })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Erro ao atualizar os detalhes do serviço.');
+        }
+        alert('Detalhes do serviço atualizados com sucesso.');
+      })
+      .catch(error => {
+        console.error('Erro ao atualizar os detalhes do serviço:', error.message);
       });
     }
     
@@ -379,6 +398,20 @@ export default {
 
 .service-page h3:last-child { /* Citação */
   font-style: italic;
+}
+
+textarea {
+  width: 100%;
+  height: 100px;
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+textarea:focus {
+  outline: none;
+  border-color: #007bff;
 }
 
 
