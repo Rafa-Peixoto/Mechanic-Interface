@@ -74,6 +74,7 @@ export default {
           }
           const data = await response.json();
           this.scheduleServices = data; // Armazena todos os serviços, sem filtragem
+          console.log("Services",data)
       } catch (error) {
           console.error('Erro ao buscar os serviços:', error.message);
       }
@@ -257,7 +258,7 @@ export default {
 }
 
 .services-table th {
-  background-color: #4CAF50;
+  background-color: #006400;
   color: white;
 }
 

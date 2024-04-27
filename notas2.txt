@@ -180,14 +180,20 @@
       "veiculos": []
     },
     {
-      "id": "6676",
-      "nome": "Rafa",
-      "telefone": "925438807",
-      "nif": "253678650",
-      "morada": "Casas",
-      "veiculos": [
-        null
-      ]
+      "id": "124",
+      "nif": "123123123",
+      "nome": "Maria Santos",
+      "email": "jms@imail.com",
+      "telefone": "912345679",
+      "veiculos": []
+    },
+    {
+      "id": "125",
+      "nif": "123451234",
+      "nome": "José Pereira",
+      "email": "jp@imail.com",
+      "telefone": "912345680",
+      "veiculos": []
     }
   ],
   "vehicles": [
@@ -219,17 +225,6 @@
       "cilindrada": 1000,
       "potencia": 200,
       "kms": 80000
-    },
-    {
-      "id": "55-55-55",
-      "clientId": "6676",
-      "cilindrada": "1600",
-      "potencia": "",
-      "marca": "Opel",
-      "modelo": "Corsa",
-      "jantes": "17",
-      "kms": "100000",
-      "vehicle-typeId": "gasoleo"
     }
   ],
   "services": [
@@ -238,7 +233,7 @@
       "vehicleId": "08-25-AA",
       "workerId": "1",
       "servicedefinitionId": "sp",
-      "estado": "realizado",
+      "estado": "agendado",
       "duracao": 20,
       "descrição": "Colocar XPTO 225R15",
       "servicosextra": ""
@@ -246,7 +241,7 @@
     {
       "id": "s32",
       "vehicleId": "AH-31-BB",
-      "workerId": "",
+      "workerId": "1",
       "servicedefinitionId": "mom",
       "estado": "agendado",
       "data": {
@@ -258,7 +253,8 @@
       },
       "duracao": 20,
       "descrição": "Atenção ao banco do condutor.",
-      "servicosextra": ""
+      "servicosextra": "",
+      "selectedExtraServices": "svi"
     },
     {
       "id": "s33",
@@ -284,7 +280,7 @@
       "vehicleId": "08-25-AA",
       "servicedefinitionId": "sp",
       "workerId": "1",
-      "estado": "realizado",
+      "estado": "agendado",
       "agendamento": "filaDeEspera",
       "duracao": 20,
       "descrição": "Colocar XPTO 225R15",
@@ -295,7 +291,7 @@
       "vehicleId": "08-25-AA",
       "servicedefinitionId": "li",
       "workerId": "1",
-      "estado": "realizado",
+      "estado": "agendado",
       "agendamento": "programado",
       "data": {
         "dia": 2,
@@ -306,23 +302,6 @@
       },
       "duracao": 20,
       "descrição": "shampoo XPTO",
-      "servicosextra": ""
-    },
-    {
-      "id": "cb41",
-      "vehicleId": "55-55-55",
-      "servicedefinitionId": "mot",
-      "workerId": "",
-      "estado": "agendado",
-      "data": {
-        "dia": "",
-        "mes": "",
-        "ano": "",
-        "hora": "",
-        "minutos": ""
-      },
-      "duracao": 20,
-      "descricao": "",
       "servicosextra": ""
     }
   ],
@@ -337,12 +316,7 @@
         "s12",
         "s31",
         "s24",
-        "s31",
-        "s24",
-        "s12",
-        "s31",
-        "s31",
-        "s32"
+        "s31"
       ],
       "age": "55",
       "profession": "Mecânico",

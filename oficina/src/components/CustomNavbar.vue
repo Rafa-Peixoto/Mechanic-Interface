@@ -34,52 +34,59 @@ export default {
 
 <style scoped>
 
-  .login-nav {
-    display: none;
-  }
-
-  #nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 10px;
-    background-color: #a9fdac;
-    width: 100%;
-    position: relative;
-    top: -8px;
-    left: -8px;
+    .login-nav {
+      display: none;
     }
 
-  h3{
-    font-size: 30px;
-  }
+    #nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 10px;
+      background-color: #006400;
+      width: 100%;
+      position: relative;
+      top: -8px;
+      left: -8px;
+      }
+      
+    h3{
+      font-size: 30px;
+    }
 
-  .links-container {
-    display: flex;
-    flex-wrap: wrap;
-  }
+    .links-container {
+      display: flex;
+      flex-wrap: wrap;
+    }
 
-  a {
-    text-decoration: none;
-    padding: 0.5rem 1rem;
-    font-weight: 600;
-    border: 1px solid rgb(0, 0, 0);
-    border-radius: 5px;
-    color: var(--color-accent);
-    transition: all 0.3s ease-in;
-    margin: 5px;
-    font-size: 20px;
-  }
+    a {
+      text-decoration: none;
+      padding: 0.5rem 1rem;
+      font-weight: 600;
+      border: 1px solid rgb(0, 0, 0);
+      border-radius: 5px;
+      color: var(--color-accent);
+      transition: all 0.3s ease-in;
+      margin: 5px;
+      font-size: 20px;
+      background-color: #005c00;
+    }
 
-  a.router-link-active {
-    background-color: var(--color-accent);
-    color: var(--color-light);
-  }
+    a.router-link-active {
+      background-color: var(--color-accent);
+      color: var(--color-light);
+      background-color: #005c00;
+    }
 
-  a:hover{
-    background-color: black;
-    color: white;
-  }
+    a:hover{
+      background-color: black;
+      color: white;
+    }
+
+    img {
+      height: 60px; /* ou qualquer outra altura que você preferir */
+    }
+
 
   .logout a{
     display: flex;

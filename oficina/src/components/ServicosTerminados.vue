@@ -165,7 +165,6 @@ export default {
   }
 };
 </script>
-
 <style scoped>
 .service-page {
   max-width: 1000px;
@@ -187,7 +186,7 @@ export default {
 }
 
 .services-table th {
-  background-color: #4CAF50;
+  background-color: #006400;
   color: white;
 }
 

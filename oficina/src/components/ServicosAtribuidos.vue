@@ -255,12 +255,12 @@ export default {
 }
 
 .services-table th {
-  background-color: #4CAF50;
+  background-color: #006400;
   color: white;
 }
 
 .services-table tr:nth-child(even) {
-  background-color: #f2f2f2;
+  background-color: #aec4ae;
 }
 
 .services-table tr:hover {
