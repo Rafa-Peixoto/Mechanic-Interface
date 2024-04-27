@@ -7,7 +7,7 @@
       <p>Serviço: {{ getServiceDescription(serviceDetails && serviceDetails.servicedefinitionId) }}</p>
       <p>Estado: 
         <select v-model="serviceDetails.estado" @change="handleEstadoChange" class="estado">
-          <option v-for="estado in estados" :value="estado" :key="estado">{{ estado }}</option>
+          <option v-for="estado in estados" :value="estado" :key="estado" :disabled="checkEstadoDisabled(estado)">{{ estado }}</option>
         </select>
       </p>
       <p>Duração: {{ serviceDetails && serviceDetails.duracao }}</p>
@@ -80,6 +80,11 @@ export default {
       } catch (error) {
         console.error('Erro ao buscar os detalhes do serviço:', error.message);
       }
+    },
+
+    checkEstadoDisabled(estado) {
+      // Desabilitar todas as opções exceto a atual se o estado é 'realizado'
+      return this.serviceDetails.estado === 'realizado' && this.serviceDetails.estado !== estado;
     },
 
     async fetchServiceDefinitions(){
@@ -365,7 +370,7 @@ export default {
           throw new Error('Erro ao eliminar o serviço.');
         }
         alert('Serviço eliminado com sucesso!');
-        this.$router.push('/');  // Redirecionar o usuário para outra página, por exemplo, a lista de serviços
+        this.$router.push('/ServicosAtribuidos');  // Redirecionar o usuário para outra página, por exemplo, a lista de serviços
       })
       .catch(error => {
         console.error('Erro ao eliminar o serviço:', error.message);

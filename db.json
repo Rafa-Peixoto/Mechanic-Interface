@@ -198,6 +198,16 @@
       "veiculos": [
         null
       ]
+    },
+    {
+      "id": "15dc",
+      "nome": "joao",
+      "telefone": "930693910",
+      "nif": "61",
+      "morada": "mogege",
+      "veiculos": [
+        null
+      ]
     }
   ],
   "vehicles": [
@@ -251,34 +261,28 @@
       "jantes": "19",
       "kms": "10000",
       "vehicle-typeId": "gasolina"
+    },
+    {
+      "id": "57-EA-88",
+      "clientId": "15dc",
+      "cilindrada": "2000",
+      "potencia": "",
+      "marca": "vw",
+      "modelo": "passat",
+      "jantes": "17",
+      "kms": "123456",
+      "vehicle-typeId": "gasoleo"
     }
   ],
   "services": [
     {
       "id": "s31",
       "vehicleId": "08-25-AA",
-      "workerId": "1",
+      "workerId": "",
       "servicedefinitionId": "sp",
-      "estado": "atribuido",
+      "estado": "agendado",
       "duracao": 20,
       "descrição": "ola",
-      "servicosextra": ""
-    },
-    {
-      "id": "s32",
-      "vehicleId": "AH-31-BB",
-      "workerId": "1",
-      "servicedefinitionId": "mom",
-      "estado": "realizado",
-      "data": {
-        "dia": 26,
-        "mes": 3,
-        "ano": 2024,
-        "hora": 14,
-        "minutos": 15
-      },
-      "duracao": 20,
-      "descrição": "Atenção ao banco do condutor.",
       "servicosextra": ""
     },
     {
@@ -305,7 +309,7 @@
       "vehicleId": "08-25-AA",
       "servicedefinitionId": "sp",
       "workerId": "1",
-      "estado": "realizado",
+      "estado": "atribuido",
       "agendamento": "filaDeEspera",
       "duracao": 20,
       "descrição": "Colocar XPTO 225R15",
@@ -330,21 +334,29 @@
       "servicosextra": ""
     },
     {
-      "id": "0048",
-      "vehicleId": "99-99-99",
-      "servicedefinitionId": "le",
+      "id": "eb00",
+      "vehicleId": "57-EA-88",
+      "servicedefinitionId": "cr",
       "workerId": "1",
-      "estado": "realizado",
+      "estado": "atribuido",
       "data": {
-        "dia": "",
-        "mes": "",
-        "ano": "",
-        "hora": "",
-        "minutos": ""
+        "dia": "29",
+        "mes": "04",
+        "ano": "2024",
+        "hora": "14",
+        "minutos": "30"
       },
-      "duracao": 30,
+      "dataTerminado": {
+        "dia": "27",
+        "mes": "04",
+        "ano": "2024",
+        "hora": "22",
+        "minutos": "29"
+      },
+      "duracao": 20,
       "descricao": "",
-      "servicosextra": ""
+      "servicosextra": "",
+      "descrição": ""
     }
   ],
   "workers": [
@@ -365,7 +377,8 @@
         "s31",
         "s32",
         "s32",
-        "0048"
+        "0048",
+        "eb00"
       ],
       "age": "55",
       "profession": "Mecânico",
