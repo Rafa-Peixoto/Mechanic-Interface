@@ -18,7 +18,8 @@
                 <th>Serviço</th>
                 <th>Estado</th>
                 <th>Posto</th>
-                <th>Data</th>
+                <th>Data de Agendamento</th>
+                <th>Data de Entrega</th>
                 <th>Duração</th>
             </tr>
         </thead>
@@ -32,6 +33,7 @@
                 <td>{{ service.estado }}</td>
                 <td>{{ getPostoDescription(service.servicedefinitionId)}}</td>
                 <td>{{ formatDate(service.data) }}</td>
+                <td>{{ formatDate(service.dataTerminado) }}</td>
                 <td>{{ service.duracao }}</td>
             </tr>
         </tbody>

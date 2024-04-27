@@ -8,6 +8,8 @@
             <th>Cliente</th>
             <th>Veículo</th>
             <th>Serviço</th>
+            <th>Data de Agendamento</th>
+            <th>Hora de Agendamento</th>
           </tr>
         </thead>
         <tbody>
@@ -22,6 +24,12 @@
               <select v-model="selectedService">
                 <option v-for="service in serviceDefinitions" :key="service.id" :value="service.id">{{ service.descr }}</option>
               </select>
+            </td>
+            <td>
+              <input type="date" v-model="newService.dataAgendamento" required>
+            </td>
+            <td>
+              <input type="time" v-model="newService.horaAgendamento" required>
             </td>
           </tr>
         </tbody>
@@ -133,6 +141,8 @@ export default {
       newService: {
         nif: "",
         vehicleId: "",
+        dataAgendamento: "", 
+        horaAgendamento: "", 
       },
       selectedService: null,
     };
@@ -444,11 +454,18 @@ export default {
         workerId: "", // Preencher com o ID do trabalhador responsável, se necessário
         estado: "agendado", // Preencher com o estado adequado, se necessário
         data: {
-          dia: "",
-          mes: "",
-          ano: "",
-          hora: "",
-          minutos: "",
+          dia: this.newService.dataAgendamento ? this.newService.dataAgendamento.split('-')[2] : "",
+          mes: this.newService.dataAgendamento ? this.newService.dataAgendamento.split('-')[1] : "",
+          ano: this.newService.dataAgendamento ? this.newService.dataAgendamento.split('-')[0] : "",
+          hora: this.newService.horaAgendamento ? this.newService.horaAgendamento.split(':')[0] : "",
+          minutos: this.newService.horaAgendamento ? this.newService.horaAgendamento.split(':')[1] : "",
+        },
+        dataTerminado:{
+          dia:"",
+          mes:"",
+          ano:"", 
+          hora:"",
+          minutos:"",
         },
         duracao: serviceDuration, // Preencher com a duração do serviço, se necessário
         descricao: "", // Considerando que a descrição do serviço foi inserida corretamente

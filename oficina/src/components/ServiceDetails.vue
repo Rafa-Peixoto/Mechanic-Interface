@@ -49,7 +49,15 @@ import { useUserStore } from '../stores';
 export default {
   data() {
     return {
-      serviceDetails: {},
+      serviceDetails: {
+         dataTerminado: {
+        dia: "",
+        mes: "",
+        ano: "",
+        hora: "",
+        minutos: ""
+      },
+      },
       serviceDefinitions: [],
       clients: [],
       vehicles: [],
@@ -91,6 +99,16 @@ export default {
     async updateServiceStatus() {
       const serviceId = this.$route.params.serviceId;
       try {
+        if (this.serviceDetails.estado === 'realizado') {
+          const currentDate = new Date();
+          this.serviceDetails.dataTerminado = {
+            dia: String(currentDate.getDate()).padStart(2, '0'),
+            mes: String(currentDate.getMonth() + 1).padStart(2, '0'), // Meses são baseados em zero
+            ano: String(currentDate.getFullYear()),
+            hora: String(currentDate.getHours()).padStart(2, '0'),
+            minutos: String(currentDate.getMinutes()).padStart(2, '0')
+          };
+        }
         const response = await fetch(`http://localhost:3000/services/${serviceId}`, {
         method: 'PUT',
         headers: {

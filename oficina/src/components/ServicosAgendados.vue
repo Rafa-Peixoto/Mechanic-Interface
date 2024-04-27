@@ -18,7 +18,7 @@
                 <th>Serviço</th>
                 <th>Estado</th>
                 <th>Posto</th>
-                <th>Data</th>
+                <th>Data de Agendamento</th>
                 <th>Duração</th>
             </tr>
         </thead>
