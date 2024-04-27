@@ -23,20 +23,18 @@ export default {
     return {showNavbar};
   }
 }
-
-
 </script>
 
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
 
-  /* Estilo global que afeta todos os elementos do body */
-  body {
-    font-family: 'Roboto', sans-serif;
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    background-color: #f0fff0; /* background verde claro */
-  }
+/* Estilo global que afeta todos os elementos do body */
+body {
+  font-family: 'Roboto', sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  background-color: #f0fff0; /* background verde claro */
+}
 
 </style>

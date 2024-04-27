@@ -1,6 +1,7 @@
 <template>
   <div class="login-container">
-    <h1>Página de Login</h1>
+    <img src="../../public/logo2.1.png" alt="Logo da E.S.Ideal" />
+    <h1></h1>
     <form @submit.prevent="submitLogin">
       <div>
         <label for="id">Identificador:</label>
