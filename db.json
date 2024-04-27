@@ -227,7 +227,7 @@
       "vehicleId": "08-25-AA",
       "workerId": "1",
       "servicedefinitionId": "sp",
-      "estado": "realizado",
+      "estado": "atribuido",
       "duracao": 20,
       "descrição": "Colocar XPTO 225R15",
       "servicosextra": ""
@@ -274,7 +274,7 @@
       "vehicleId": "08-25-AA",
       "servicedefinitionId": "sp",
       "workerId": "1",
-      "estado": "realizado",
+      "estado": "atribuido",
       "agendamento": "filaDeEspera",
       "duracao": 20,
       "descrição": "Colocar XPTO 225R15",
@@ -285,7 +285,7 @@
       "vehicleId": "08-25-AA",
       "servicedefinitionId": "li",
       "workerId": "1",
-      "estado": "realizado",
+      "estado": "atribuido",
       "agendamento": "programado",
       "data": {
         "dia": 2,
@@ -309,7 +309,9 @@
       "servicesDone": [
         "s12",
         "s31",
-        "s24"
+        "s24",
+        "s32",
+        "s32"
       ],
       "age": "55",
       "profession": "Mecânico",

@@ -1,6 +1,6 @@
 <template>
     <nav id="nav" :class="{ 'login-nav': isLoginPage }">
-      <h3>E.S.Ideal</h3>
+      <img src="../../public/logo2.2.png" alt="Logo da E.S.Ideal" />
       <div class="nav-items">
         <div class="links-container">
           <router-link to="/Perfil">Perfil</router-link>
@@ -38,7 +38,7 @@ export default {
   justify-content: space-between;
   align-items: center;
   padding: 10px 10px;
-  background-color: #a9fdac;
+  background-color: #006400;
   width: 100%;
   position: relative;
   top: -8px;
@@ -64,16 +64,22 @@ a {
   transition: all 0.3s ease-in;
   margin: 5px;
   font-size: 20px;
+  background-color: #005c00;
 }
 
 a.router-link-active {
   background-color: var(--color-accent);
   color: var(--color-light);
+  background-color: #005c00;
 }
 
 a:hover{
   background-color: black;
   color: white;
+}
+
+img {
+  height: 60px; /* ou qualquer outra altura que você preferir */
 }
 
 </style>

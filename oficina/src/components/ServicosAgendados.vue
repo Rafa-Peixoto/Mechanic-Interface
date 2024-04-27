@@ -257,7 +257,7 @@ export default {
 }
 
 .services-table th {
-  background-color: #4CAF50;
+  background-color: #006400;
   color: white;
 }
 

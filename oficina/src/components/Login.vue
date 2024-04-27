@@ -1,6 +1,7 @@
 <template>
   <div class="login-container">
-    <h1>Página de Login</h1>
+    <img src="../../public/logo2.1.png" alt="Logo da E.S.Ideal" />
+    <h1></h1>
     <form @submit.prevent="submitLogin">
       <div>
         <label for="id">Identificador:</label>
@@ -62,10 +63,12 @@ export default {
   margin: auto;
   padding: 80px;
   text-align: center;
+  background-color: #f0fff0;
 }
 
 .login-container h1 {
   margin-bottom: 50px;
+  color: #0e790e;
 }
 
 .login-container div {
@@ -83,6 +86,7 @@ input[type="password"] {
   padding: 8px;
   border: 0;
   border-bottom: 1px solid black;
+  background-color: #f0fff0;
   text-align: center;
 }
 
@@ -93,15 +97,20 @@ button {
 }
 
 button[type="submit"] {
-    margin-top: 10px;
-    border-radius: 5px;
-  background-color: blue;
+  margin-top: 10px;
+  border-radius: 5px;
+  background-color: #006400;
   color: white;
+  border: none;
 }
 
 button[type="button"] {
   background-color: red;
   color: white;
+}
+
+button[type="submit"]:hover {
+  background-color: black; /* Cor do botão no hover */
 }
 
 .error-message {
@@ -111,6 +120,10 @@ button[type="button"] {
 .actions {
   margin-left: 115px;
   margin-top: 20px;
+}
+
+img {
+  height: 70px; /* ou qualquer outra altura que você preferir */
 }
 
 </style>
