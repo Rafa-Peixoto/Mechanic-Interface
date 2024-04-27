@@ -19,8 +19,8 @@
                   <th>Serviço</th>
                   <th>Estado</th>
                   <th>Posto</th>
-                  <th>Data</th>
-                  <th>Data de Entrega</th>
+                  <th>Data de Inicio</th>
+                  <th>Data de Fim</th>
                   <th>Duração</th>
               </tr>
           </thead>
@@ -33,8 +33,8 @@
                   <td data-label="Serviço">{{ getServiceDescription(service.servicedefinitionId) }}</td>
                   <td data-label="Estado">{{ service.estado }}</td>
                   <td data-label="Posto">{{ getPostoDescription(service.servicedefinitionId)}}</td>
-                  <td data-label="Data">{{ formatDate(service.data) }}</td>
-                  <td data-label="Data de Entrega">{{ formatDate(service.dataTerminado) }}</td>
+                  <td data-label="Data de Inicio">{{ formatDate(service.data) }}</td>
+                  <td data-label="Data de Fim">{{ formatDate(service.dataTerminado) }}</td>
                   <td data-label="Duração">{{ service.duracao }}</td>
               </tr>
           </tbody>

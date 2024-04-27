@@ -278,9 +278,9 @@
     {
       "id": "s31",
       "vehicleId": "08-25-AA",
-      "workerId": "",
+      "workerId": "1",
       "servicedefinitionId": "sp",
-      "estado": "agendado",
+      "estado": "atribuido",
       "duracao": 20,
       "descrição": "ola",
       "servicosextra": ""

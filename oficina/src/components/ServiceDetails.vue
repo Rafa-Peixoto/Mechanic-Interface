@@ -64,6 +64,7 @@ export default {
       vehicleTypes: [],
       estados: ['atribuido', 'agendado', 'parado', 'realizado', 'iniciado'],
       endTime: "",
+      previousEstado: '',
       selectedExtraServices: []
     };
   },
@@ -168,14 +169,41 @@ export default {
       }
     },
 
+    // handleEstadoChange() {
+    //   if (['agendado'].includes(this.serviceDetails.estado)) {
+    //     this.serviceDetails.workerId = "";
+    //   }
+    //   if (['atribuido', 'iniciado', 'parado'].includes(this.serviceDetails.estado)) {
+    //     this.serviceDetails.workerId = this.user.id;
+    //   }
+    //     this.updateServiceStatus();
+    // },
+
     handleEstadoChange() {
+      // Armazena o estado anterior em caso de necessidade de reversão
+      const estadoAnterior = this.serviceDetails.estado;
+
+      // Condicionais para ajustar o `workerId` baseado no estado
       if (['agendado'].includes(this.serviceDetails.estado)) {
         this.serviceDetails.workerId = "";
       }
       if (['atribuido', 'iniciado', 'parado'].includes(this.serviceDetails.estado)) {
         this.serviceDetails.workerId = this.user.id;
       }
-        this.updateServiceStatus();
+
+      // Verifica se o novo estado é 'realizado' e pede confirmação
+      if (this.serviceDetails.estado === 'realizado') {
+        if (!window.confirm("Tem a certeza que deseja marcar o serviço como realizado?")) {
+          // Reverte para o estado anterior se o usuário cancelar a ação
+          this.$nextTick(() => {
+            this.serviceDetails.estado = estadoAnterior;
+          });
+          return; // Sai da função para não atualizar o estado
+        }
+      }
+
+      // Procede com a atualização do serviço após a confirmação ou se a mudança de estado não necessitar confirmação
+      this.updateServiceStatus();
     },
 
     getServiceDescription(serviceId) {
@@ -356,7 +384,7 @@ export default {
       }
     },
     confirmDeleteService() {
-      if (window.confirm("Tem certeza que deseja eliminar este serviço?")) {
+      if (window.confirm("Tem a certeza que deseja eliminar este serviço?")) {
         this.deleteService();
       }
     },
@@ -412,6 +440,9 @@ export default {
     }
   }
 };
+
+
+
 </script>
 
 <style scoped>
