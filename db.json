@@ -388,7 +388,33 @@
       "objectives": "Manter o seu emprego, aprender mais sobre carros elétricos",
       "challenges": "Adaptar-se às novas tecnologias, evitar erros e reclamações",
       "solutions": "Pesquisar na internet, assistir a vídeos e tutoriais, pedir ajuda aos colegas mais novos",
-      "quotes": "Eu gosto de trabalhar com carros, mas às vezes sinto que não estou preparado para lidar com os novos modelos. Eu quero mostrar o meu valor na empresa, mas quando me atribuem trabalho fora da minha especialização sou obrigado a ir à secretaria dizer que não o posso realizar e temo ficar mal visto. O novo sistema devia ajudar a resolver isso. Espero que seja de utilização fácil."
+      "quotes": "Eu gosto de trabalhar com carros, mas às vezes sinto que não estou preparado para lidar com os novos modelos. Eu quero mostrar o meu valor na empresa, mas quando me atribuem trabalho fora da minha especialização sou obrigado a ir à secretaria dizer que não o posso realizar e temo ficar mal visto. O novo sistema devia ajudar a resolver isso. Espero que seja de utilização fácil.",
+      "shifts": [
+        {
+          "entry": "2024-04-28T03:25:00.137Z",
+          "exit": "2024-04-28T03:25:06.454Z"
+        },
+        {
+          "entry": "2024-04-28T03:25:20.842Z",
+          "exit": "2024-04-28T03:25:24.846Z"
+        },
+        {
+          "entry": "2024-04-28T03:25:51.797Z",
+          "exit": "2024-04-28T03:29:15.492Z"
+        },
+        {
+          "entry": "2024-04-28T03:29:21.043Z",
+          "exit": "2024-04-28T03:29:39.658Z"
+        },
+        {
+          "entry": "2024-04-28T04:00:14.968Z",
+          "exit": "2024-04-28T04:00:25.119Z"
+        },
+        {
+          "entry": "2024-04-28T04:00:29.331Z",
+          "exit": null
+        }
+      ]
     },
     {
       "id": "2",
@@ -405,7 +431,8 @@
       "objectives": "Destacar-se na sua área, progredir na carreira",
       "challenges": "Lidar com a desconfiança dos clientes, adaptar-se às novas tecnologias, dominar o novo sistema informático",
       "solutions": "Pesquisar na internet, fazer cursos e certificações, consultar manuais e revistas técnicas, usar o sistema informático para otimizar o seu trabalho",
-      "quotes": "Eu amo o que faço, mas sei que preciso me atualizar constantemente. Os carros estão cada vez mais sofisticados e eu quero estar preparada para qualquer desafio. O novo sistema informático é uma oportunidade para eu melhorar a minha produtividade e a qualidade do meu serviço."
+      "quotes": "Eu amo o que faço, mas sei que preciso me atualizar constantemente. Os carros estão cada vez mais sofisticados e eu quero estar preparada para qualquer desafio. O novo sistema informático é uma oportunidade para eu melhorar a minha produtividade e a qualidade do meu serviço.",
+      "shifts": []
     }
   ]
 }

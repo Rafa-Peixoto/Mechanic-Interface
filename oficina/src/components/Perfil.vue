@@ -12,6 +12,13 @@
           <h3>Desafios: {{ user.challenges }}</h3>
           <h3>Soluções: {{ user.solutions }}</h3>
           <h3>Citação: {{ user.quotes }}</h3>
+          <h3>Turnos:</h3>
+          <ul>
+            <li v-for="shift in user.shifts" :key="shift.entry">
+              Hora de entrada: {{ formatDate(shift.entry) }},
+              Hora de saída: {{ formatDate(shift.exit) }}
+            </li>
+          </ul>
       </div>
   </div>
 </template>
@@ -20,43 +27,54 @@
 import { useUserStore } from '../stores';
 
 export default {
-name: 'PainelServicos',
-data() {
-  return {
-    user: null,
-    services: []
-  };
-},
-methods: {
-  async fetchServices() {
-    console.log("fetch");
-    if (!this.user || !this.user.id) {
-      console.error("Usuário não está logado ou ID do usuário não está disponível.");
-      return;
-    }
-    
-    const url = `http://localhost:3000/services?clientId=${this.user.id}`;
-    try {
-      const response = await fetch(url);
-      if (!response.ok) {
-        throw new Error("Erro ao buscar serviços: " + response.statusText);
+  name: 'PerfilUsuario',
+  data() {
+    return {
+      user: null,
+      services: []
+    };
+  },
+  async created() {
+      const userStore = useUserStore();
+      this.user = userStore.user;
+      if (this.user && this.user.id) {
+        await this.fetchServices();
+      } else {
+        console.log("Nenhum usuário logado para buscar serviços.");
       }
-      const data = await response.json();
-      this.services = data;
-    } catch (error) {
-      console.error('Erro ao buscar os serviços:', error.message);
-    }
+  },
+  methods: {
+    async fetchServices() {
+      console.log("fetch");
+      if (!this.user || !this.user.id) {
+        console.error("Usuário não está logado ou ID do usuário não está disponível.");
+        return;
+      }
+      
+      const url = `http://localhost:3000/services?clientId=${this.user.id}`;
+      try {
+        const response = await fetch(url);
+        if (!response.ok) {
+          throw new Error("Erro ao buscar serviços: " + response.statusText);
+        }
+        const data = await response.json();
+        this.services = data;
+      } catch (error) {
+        console.error('Erro ao buscar os serviços:', error.message);
+      }
+    },
+
+    formatDate(dateStr) {
+        if (!dateStr) return "-";
+        const date = new Date(dateStr);
+        const day = date.getDate().toString().padStart(2, '0');
+        const month = (date.getMonth() + 1).toString().padStart(2, '0');
+        const year = date.getFullYear();
+        const hours = date.getHours().toString().padStart(2, '0');
+        const minutes = date.getMinutes().toString().padStart(2, '0');
+        return `${day}/${month}/${year} ${hours}:${minutes}`;
+    },
   }
-},
-async created() {
-  const userStore = useUserStore();
-  this.user = userStore.user;
-  if (this.user && this.user.id) {
-    await this.fetchServices();
-  } else {
-    console.log("Nenhum usuário logado para buscar serviços.");
-  }
-}
 };
 </script>
 

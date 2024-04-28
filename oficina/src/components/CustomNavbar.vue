@@ -10,24 +10,54 @@
       </div>
     </div>
     <div class="logout">
-        <router-link to="/Login">Logout</router-link>
+      <button @click="handleLogout">Logout</button>
     </div>
   </nav>
 </template>
 
 <script>
+import {useUserStore} from '../stores.js';
 export default {
-data() {
-  return {
-    isLoginPage: false
-  };
-},
-created() {
-  if (this.$route.path === '/Login') {
-    this.isLoginPage = true;
+  data() {
+    return {
+      isLoginPage: false
+    };
+  },
+  created() {
+    if (this.$route.path === '/Login') {
+      this.isLoginPage = true;
+    }
+  },
+  methods: {
+    async handleLogout() {
+      try {
+        const userStore = useUserStore();
+        const workerId = userStore.workerId; // Recuperar o workerId
+        await this.recordExit(workerId);
+        this.$router.push('/Login');
+      } catch (error) {
+        console.error('Falha ao executar o logout:', error);
+      }
+    },
+
+    async recordExit(workerId) {
+      const response = await fetch(`http://localhost:3000/workers/${workerId}`);
+      const worker = await response.json();
+
+      const lastShift = worker.shifts.find(shift => !shift.exit);
+      if (lastShift) {
+        lastShift.exit = new Date().toISOString();
+      }
+
+      await fetch(`http://localhost:3000/workers/${workerId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(worker)
+      });
+    }
   }
-}
 };
+
 </script>
 
 <style scoped>
@@ -85,16 +115,24 @@ img {
 height: 60px; /* ou qualquer outra altura que você preferir */
 }
 
-.logout a{
+.logout button {
   display: flex;
-  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  font-weight: 600;
+  border: 1px solid rgb(0, 0, 0);
+  border-radius: 5px;
   color: rgb(255, 255, 255);
   background-color: #188830;
   border-color:#188830;
   margin-right: 20px;
-}
-.logout a:hover{
   cursor: pointer;
+  transition: all 0.3s ease-in;
+}
+
+.logout button:hover {
   background-color: #a9fdac;
 }
+
 </style>

@@ -33,7 +33,26 @@ export default {
     };
   },
   methods: {
-     async submitLogin() {
+    async recordEntry(workerId) {
+      // Obter os dados do trabalhador
+      const response = await fetch(`http://localhost:3000/workers/${workerId}`);
+      const worker = await response.json();
+
+      // Adicionar nova entrada
+      const newShift = {
+        entry: new Date().toISOString(),
+        exit: null
+      };
+      worker.shifts.push(newShift);
+
+      // Atualizar o trabalhador
+      await fetch(`http://localhost:3000/workers/${workerId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(worker)
+      });
+    },
+    async submitLogin() {
       try {
         // Usando filtros para buscar o worker com identificador e password específicos
         const url = `http://localhost:3000/workers?id=${this.credentials.id}&password=${this.credentials.password}`;
@@ -43,6 +62,8 @@ export default {
           // Se login bem sucedido, redirecionar para a página principal
           const userStore = useUserStore();
           userStore.setUser(data[0]);
+          userStore.setWorkerId(this.credentials.id); 
+          this.recordEntry(this.credentials.id);
           this.$router.push('/ServicosAtribuidos'); // substitua '/main' pela rota da sua página principal
         } else {
           // Se nenhum usuário correspondente foi encontrado

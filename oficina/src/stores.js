@@ -13,6 +13,7 @@ export const useMessageStore = defineStore('message',{
 export const  useUserStore = defineStore('user',{
     state: () => ({ 
         user: null,
+        workerId: null,
         isLoggedIn: false
     }),
     actions: {
@@ -23,6 +24,13 @@ export const  useUserStore = defineStore('user',{
         logout() {
             this.user = null;
             this.isLoggedIn = false;
+        },
+        setWorkerId(id) {
+            this.workerId = id;
         }
+    },
+    getters: {
+      getUser: (state) => state.user,
+      getWorkerId: (state) => state.workerId
     }
 });
